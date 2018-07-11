@@ -1,6 +1,7 @@
 package com.example.q.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -43,6 +45,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.mongodb.lang.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -118,6 +123,8 @@ public class Tab1 extends Fragment {
         uploadButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
+
+                Log.d("dd","downloadButtonclicked");
                 View wholeview = getView();
                 ListView l1 = wholeview.findViewById(R.id.listview);
                 ListUpdate(l1);
@@ -125,17 +132,40 @@ public class Tab1 extends Fragment {
             }
         });
 
+        ImageView imageView = view.findViewById(R.id.downloadImage);
+        int resourceID = R.drawable.stitch_phone;
+        Glide.with(this).load(resourceID).into(imageView);
+
         Button downloadButton =  view.findViewById(R.id.downloadButton);
         downloadButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
+                Log.d("dd","downloadButtonclicked");
                 View wholeview = getView();
                 ListView l1 = wholeview.findViewById(R.id.listview);
                 ContactDownload(l1);
             }
         });
-        final ListView l1 = view.findViewById(R.id.listview);
 
+        final ListView l1 = view.findViewById(R.id.listview);
+        l1.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Tab1ListAdapter.ViewHolder contactHolder = (Tab1ListAdapter.ViewHolder) view.getTag();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.accumulate("name", contactHolder.name);
+                    jsonObject.accumulate("number", contactHolder.phoneNum);
+                    jsonArray.put(jsonObject);
+                }catch (Exception e){
+                    Log.d("Exception", e.getMessage());
+                }
+                NetworkTask networkTask = new NetworkTask("api/contacts", "delete", null, jsonArray);
+                networkTask.execute();
+
+            }
+        });
 
 
         return view;
@@ -205,6 +235,7 @@ public class Tab1 extends Fragment {
     }
 
     public void ContactUpload(){
+        Log.d("dd", "contactupload");
         String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
         Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,projection,null,null, null);
         JSONArray jsonarray = new JSONArray();
@@ -231,8 +262,11 @@ public class Tab1 extends Fragment {
 
     }
     public void ContactDownload(ListView l1){
+
+        Log.d("d","contactDownload is called");
         NetworkTask getcontacts = new NetworkTask("api/getallcontacts", "get", null, null);
         getcontacts.execute();
+        Log.d("d","networktask has been excuted");
         try{
             String s=  getcontacts.get();
             Log.d("getcontact:", s);

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,13 +17,18 @@ public class GridAdapter extends BaseAdapter {
     Context context;
     int layout;
     ArrayList<Bitmap> thumbsList;
+    ArrayList<String> idList;
     LayoutInflater inf;
 
-    public GridAdapter(Context context, ArrayList<Bitmap> data) {
+    public GridAdapter(Context context, ArrayList<Bitmap> data, ArrayList<String> idData) {
         this.context = context;
         inf = (LayoutInflater) context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         thumbsList = data;
+        idList = idData;
+    }
+    static class ViewHolder {
+        public String id;
     }
 
     @Override
@@ -55,6 +61,10 @@ public class GridAdapter extends BaseAdapter {
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             view.setImageBitmap(thumbsList.get(position));
         }
+
+        ViewHolder idHolder = new ViewHolder();
+        idHolder.id = idList.get(position);
+        view.setTag(idHolder);
         return view;
     }
 

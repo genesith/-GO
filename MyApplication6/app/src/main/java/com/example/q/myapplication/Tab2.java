@@ -65,6 +65,8 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -158,14 +160,23 @@ public class Tab2 extends Fragment {
             }
         });
 
+
+        ImageView imageView = view.findViewById(R.id.buttonImage);
+        int resourceID = R.drawable.shy;
+        Glide.with(this).load(resourceID).into(imageView);
+
         GridView gridView = view.findViewById(R.id.gridView);
         //gridUpdate( MediaStore.Images.Media.EXTERNAL_CONTENT_URI, gridView);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent i = new Intent(getContext(),Imageupg.class);
+                GridAdapter.ViewHolder idHolder = (GridAdapter.ViewHolder) view.getTag();
+                String id = idHolder.id;
                 i.putExtra("index", position);
+                i.putExtra("imageId", id);
                 startActivity(i);
+
             }
         });
 
@@ -225,9 +236,12 @@ public class Tab2 extends Fragment {
     }
 
     public void gridUpdate(Uri uri, GridView view){
-        ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
-
-        GridAdapter gridadapter = new GridAdapter(getContext(), thumbList);
+            ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
+            ArrayList<String> idList = new ArrayList<>();
+            for(int i=0; i<thumbList.size(); i++){
+            idList.add("");
+        }
+        GridAdapter gridadapter = new GridAdapter(getContext(), thumbList, idList);
         view.setAdapter(gridadapter);
         JSONArray jsonList = new JSONArray();
 
@@ -267,21 +281,24 @@ public class Tab2 extends Fragment {
 
             JSONArray imageList = new JSONArray(s);
             ArrayList<Bitmap> thumbList = new ArrayList<>();
+            ArrayList<String> idList = new ArrayList<>();
             Log.d("why",""+imageList.length());
             for (int i = 0; i < imageList.length(); i++) {
 
                 JSONObject json = (JSONObject) imageList.get(i);
                 String imageString = json.getString("img");
-                Log.d("getImages", imageString.substring(0,15));
+                String id = json.getString("_id");
+
                 byte [] encodeByte=Base64.decode(imageString,Base64.DEFAULT);
 
                 InputStream inputStream  = new ByteArrayInputStream(encodeByte);
                 Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
 //                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
                 thumbList.add(bitmap);
+                idList.add(id);
             }
 
-            GridAdapter gridadapter = new GridAdapter(getContext(), thumbList);
+            GridAdapter gridadapter = new GridAdapter(getContext(), thumbList, idList);
             Log.d("OOO" ,""+thumbList.size());
             view.setAdapter(gridadapter);
         } catch (Exception e) {

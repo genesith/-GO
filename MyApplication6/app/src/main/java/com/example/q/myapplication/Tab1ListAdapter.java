@@ -28,8 +28,10 @@ public class Tab1ListAdapter extends BaseAdapter {
     }
     // Hold views of the ListView to improve its scrolling performance
     static class ViewHolder {
-        public TextView name;
-        public TextView phoneNum;
+        public TextView nameView;
+        public TextView phoneNumView;
+        public String name;
+        public String phoneNum;
     }
     public Object getItem(int position) {
         return  nameList.get(position);
@@ -43,20 +45,24 @@ public class Tab1ListAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View rowView = convertView;
-        // Inflate the list_item.xml file if convertView is null
-        if(rowView==null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView= inflater.inflate(groupid, parent, false);
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) rowView.findViewById(R.id.name);
-            viewHolder.phoneNum = (TextView) rowView.findViewById(R.id.phoneNum);
-            rowView.setTag(viewHolder);
-        }
-        // Set text to each TextView of ListView item
-        ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.name.setText(nameList.get(position));
-        holder.phoneNum.setText(phoneNumList.get(position));
-        return rowView;
+            View rowView = convertView;
+            // Inflate the list_item.xml file if convertView is null
+            if(rowView==null){
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                rowView= inflater.inflate(groupid, parent, false);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.name = nameList.get(position);
+                viewHolder.phoneNum = phoneNumList.get(position);
+                viewHolder.nameView = (TextView) rowView.findViewById(R.id.name);
+                viewHolder.phoneNumView = (TextView) rowView.findViewById(R.id.phoneNum);
+                rowView.setTag(viewHolder);
+            }
+            // Set text to each TextView of ListView item
+            ViewHolder viewHolder = (ViewHolder) rowView.getTag();
+            viewHolder.name = nameList.get(position);
+            viewHolder.phoneNum = phoneNumList.get(position);
+            viewHolder.nameView.setText(viewHolder.name);
+            viewHolder.phoneNumView.setText(viewHolder.phoneNum);
+            return rowView;
     }
 }

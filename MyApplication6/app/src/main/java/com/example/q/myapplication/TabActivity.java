@@ -31,10 +31,10 @@ public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInt
         Resources res = getResources();
         Drawable phonebook = res.getDrawable(R.drawable.phonebook);
         Drawable galleryImage = res.getDrawable(R.drawable.gallery_image);
-        Drawable heart = res.getDrawable(R.drawable.heart);
+        Drawable calendar = res.getDrawable(R.drawable.calendar);
         tabLayout.addTab(tabLayout.newTab().setIcon(phonebook));
         tabLayout.addTab(tabLayout.newTab().setIcon(galleryImage));
-        tabLayout.addTab(tabLayout.newTab().setIcon(heart));
+        tabLayout.addTab(tabLayout.newTab().setIcon(calendar));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final ViewPager viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());

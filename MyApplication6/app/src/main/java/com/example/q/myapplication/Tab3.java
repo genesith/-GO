@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -80,11 +84,6 @@ public class Tab3 extends Fragment {
     private static final String TAG = "CalendarActivity";
     private CalendarView mCalendarView;
 
-    //EditText userInput;
-
-    //InputMethodManager imm;
-
-
 
     public Tab3() {
         // Required empty public constructor
@@ -107,61 +106,47 @@ public class Tab3 extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    /*
-    View.OnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            hideKeyboard();
-            switch (v.getId()) {
-                case R.id.ll:
-                    break;
 
-            }
-        }
-    });*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
 
-
-
-
- //       imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        ImageView imageView = view.findViewById(R.id.bubbleStitch);
+        int resourceID = R.drawable.stitch_pop;
+        Glide.with(this).load(resourceID).into(imageView);
 
 
         mCalendarView =  view.findViewById(R.id.calendarView);
-        TextView text =  view.findViewById(R.id.contentText);
 
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int pseudomonth, final int day) {
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 final int month = pseudomonth + 1;
+                EditText userInput = getView().findViewById(R.id.editText);
 
-
-
-               // Log.d(TAG, "onSelectedDayChange: date: " + (m + 1) + i2);
-                EditText userInput =  getView().findViewById(R.id.editText);
-                userInput.requestFocus();
-                userInput.setTextIsSelectable(true);
-                userInput.setSelection(userInput.length());
-
+                Button deleteButton = getView().findViewById(R.id.deleteButton);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        calendarDelete(month,day);
+                    }
+                });
 
                 Button displayInput = getView().findViewById(R.id.uploadButton);
                 displayInput.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // TODO Auto-generated method stub
-                        //if (userInput != null) {
+                        calendarDelete(month,day);
                         EditText userInput = getView().findViewById(R.id.editText);
                         String event = userInput.getText().toString();
-                        TextView text = getView().findViewById(R.id.contentText);
                         //imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
                         userInput.setText(null);
                         userInput.setHint("Enter");
-                        text.setText(event);
                         JSONArray jsonarray = new JSONArray();
                         try {
                             JSONObject jsonObject = new JSONObject();
@@ -173,61 +158,20 @@ public class Tab3 extends Fragment {
                             Log.d("exception", e.getMessage());
                         }
                         Log.d("1", ""+ jsonarray.length());
-                        // }
                         NetworkTask networkTask = new NetworkTask("api/calendars", "post", null, jsonarray);
                         networkTask.execute();
-/*
-                ll = (LinearLayout) getView().findViewById(R.id.ll);
-                displayInput = (Button) getView().findViewById(R.id.button);
-                userInput = (EditText) getView().findViewById(R.id.editText);
-                ll.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideKeyboard();
-                        switch (v.getId()) {
-                            case R.id.ll:
-                                break;
 
-                        }
+
                     }
                 });
-                displayInput.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideKeyboard();
-                        switch (v.getId()) {
-                            case R.id.ll:
-                                break;
-
-                        }
-                    }
-                });*/
-                    }
-                });
-
-                Toast.makeText(getContext(), "Your schedule: "+ calendarDownload(month, day) , Toast.LENGTH_LONG).show();
+                userInput.setText(calendarDownload(month,day));
             }
         });
-
-/*        Button downloadButton = view.findViewById(R.id.downloadButton);
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //calendarDownload();
-            }
-        });
-*/
 
         return view;
     }
 
 
-/*
-    private void hideKeyboard(){
-        if(userInput != null && imm != null)
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-    }
-*/
     public String calendarDownload(int targetMonth, int targetDay){
         NetworkTask getcalendars = new NetworkTask("api/getAllCalendars", "get", null, null);
         getcalendars.execute();
@@ -235,9 +179,6 @@ public class Tab3 extends Fragment {
             String s=  getcalendars.get();
             Log.d("getcalendar:", s);
             JSONArray calendarList = new JSONArray(s);
-            //ArrayList<Integer> monthList = new ArrayList<>();
-            //ArrayList<Integer> dayList = new ArrayList<>();
-            //ArrayList<String> contentList = new ArrayList<>();
             Log.d(" length is :  ",calendarList.length()+"");
             for(int i=0; i<calendarList.length(); i++){
                 JSONObject json = (JSONObject) calendarList.get(i);
@@ -248,21 +189,25 @@ public class Tab3 extends Fragment {
                 if(month == targetMonth && day == targetDay)
                     return content;
 
-                //monthList.add(month);
-                //dayList.add(day);
-                //contentList.add(content);
-                }
-            }catch (Exception e){
+            }
+        }catch (Exception e){
         }
         return "";
     }
-
-
-
-
-
-
-
+    public void calendarDelete(int targetMonth ,int targetDay){
+        JSONArray jsonarray = new JSONArray();
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("month", targetMonth);
+            jsonObject.accumulate("day", targetDay);
+            jsonarray.put(jsonObject);
+        } catch (Exception e) {
+            Log.d("exception", e.getMessage());
+        }
+        Log.d("1", "" + jsonarray.length());
+        NetworkTask networkTask = new NetworkTask("api/calendars", "delete", null, jsonarray);
+        networkTask.execute();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
  /*   public void onButtonPressed(Uri uri) {

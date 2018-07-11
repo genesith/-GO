@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Mocha"
+        android:background="@color/sharkgrey"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -20,25 +20,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="@color/latte"
+            android:textColor="@color/mint"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/buttonImage"
             android:layout_width="25dp"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/syringe"
-            android:tint="@color/theme_blue" />
+            android:src="@drawable/angle"
+            android:tint="@color/hotpink" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/theme"
+        android:background="@color/sharkgrey"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></android.support.design.widget.TabLayout>
 
 

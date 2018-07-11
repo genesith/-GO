@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:layout_marginStart="15dp"
-        android:textColor="@color/Mocha"
+        android:textColor="@color/mint"
         android:textSize="18dp"
         android:textStyle="bold" />
 

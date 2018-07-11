@@ -14,5 +14,10 @@
     <color name="theme_dark">#4b2b25</color>
     <color name="theme_blue">#88ffff</color>
     <color name="white">#ffffff</color>
+    <color name="babypink">#ECEBFF</color>
+    <color name= "sky">#d5f7ff</color>
+    <color name= "sharkgrey">#494b67</color>
+    <color name= "hotpink">#ff006c</color>
+    <color name= "mint">#2bb4a7</color>
 
 </resources>
