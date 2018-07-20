@@ -28,6 +28,6 @@ public class LoadingActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 10000);
+        }, 1000);
     }
 }
