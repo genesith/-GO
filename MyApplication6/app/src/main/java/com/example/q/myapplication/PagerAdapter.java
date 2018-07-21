@@ -18,10 +18,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                Tab1 tab1 = new Tab1();
+                ReviewFragment tab1 = new ReviewFragment();
                 return tab1;
             case 1:
-                Tab2 tab2 = new Tab2();
+                Tab1 tab2 = new Tab1();
                 return tab2;
             case 2:
                 Tab3 tab3 = new Tab3();

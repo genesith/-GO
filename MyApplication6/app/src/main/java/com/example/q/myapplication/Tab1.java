@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -118,7 +120,6 @@ public class Tab1 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
 
 
-
         Button uploadButton =  view.findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -151,21 +152,18 @@ public class Tab1 extends Fragment {
         l1.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Tab1ListAdapter.ViewHolder contactHolder = (Tab1ListAdapter.ViewHolder) view.getTag();
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("name", contactHolder.name);
-                    jsonObject.accumulate("number", contactHolder.phoneNum);
-                    jsonArray.put(jsonObject);
-                }catch (Exception e){
-                    Log.d("Exception", e.getMessage());
-                }
-                NetworkTask networkTask = new NetworkTask("api/contacts", "delete", null, jsonArray);
-                networkTask.execute();
-
+                Log.i("ang", "Gimotti!!");
+                TextView lul = (TextView)view.findViewById(R.id.VerifText);
+                Log.i("ang it says", "" +lul.getText());
             }
         });
+        TextView emptyView = new TextView(getContext());
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        emptyView.setGravity(Gravity.CENTER);
+        emptyView.setText("This appears when the list is empty");
+        emptyView.setVisibility(View.GONE);
+        ((ViewGroup)l1.getParent()).addView(emptyView);
+        l1.setEmptyView(emptyView);
 
 
         return view;
@@ -227,7 +225,7 @@ public class Tab1 extends Fragment {
             mDbOpenHelper.insertColumn(name, phoneNum, 0);
         }
         cursor.close();
-        Tab1ListAdapter adapter = new Tab1ListAdapter (getContext(), R.layout.list_item, nameList, phoneNumList);
+        VerificationListAdapter adapter = new VerificationListAdapter (getContext(), R.layout.list_item, new ArrayList<OnspotVerification>());
         l1.setAdapter(adapter);
 
 
@@ -264,29 +262,9 @@ public class Tab1 extends Fragment {
     public void ContactDownload(ListView l1){
 
         Log.d("d","contactDownload is called");
-        NetworkTask getcontacts = new NetworkTask("api/getallcontacts", "get", null, null);
-        getcontacts.execute();
-        Log.d("d","networktask has been excuted");
-        try{
-            String s=  getcontacts.get();
-            Log.d("getcontact:", s);
-            JSONArray contactList = new JSONArray(s);
-            ArrayList<String> nameList = new ArrayList<>();
-            ArrayList<String> phoneNumList = new ArrayList<>();
 
-            for(int i=0; i<contactList.length(); i++){
-                JSONObject json = (JSONObject) contactList.get(i);
-                String name = json.getString("name");
-                String number = json.getString("number");
 
-                nameList.add(name);
-                phoneNumList.add(number);
-            }
-            Tab1ListAdapter adapter = new Tab1ListAdapter (getContext(), R.layout.list_item, nameList, phoneNumList);
-            l1.setAdapter(adapter);
-             }catch (Exception e){
 
-        }
 
     }
 }
