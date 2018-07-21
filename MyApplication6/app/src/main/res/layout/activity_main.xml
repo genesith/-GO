@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/mainStitch"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/tenor" />
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
@@ -45,12 +37,11 @@
 
     <Button
         android:id="@+id/gotab"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textStyle="bold"
-        android:background = "@color/transparent"
         />
 
 

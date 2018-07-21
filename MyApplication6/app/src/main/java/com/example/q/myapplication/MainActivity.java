@@ -86,13 +86,10 @@ public class MainActivity extends AppCompatActivity {
     public static DbOpenHelper mDbOpenHelper;
 
 
-
-
     LoginButton login_button;
     Button mloginbtn, mlogoutbtn;
     CallbackManager callbackManager;
     AccessToken mAccessToken;
-
 
 
     @Override
@@ -100,17 +97,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageView imageView = findViewById(R.id.mainStitch);
-        int resourceID = R.drawable.tenor;
-        Glide.with(this).load(resourceID).into(imageView);
-
-
-
 
         mContext = this;
-
-       Intent intent = new Intent(this, LoadingActivity.class);
-        startActivity(intent);
 
         Button goTabButton = findViewById(R.id.gotab);
         goTabButton.setOnClickListener(new View.OnClickListener() {

@@ -5,11 +5,20 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,8 +77,7 @@ import static com.example.q.myapplication.MainActivity.mDbOpenHelper;
  * Use the {@link Tab1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab1 extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -78,11 +86,17 @@ public class Tab1 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private Tab2.OnFragmentInteractionListener mListener;
+
+
+    // public static Bitmap[] thumbnails;
 
     public Tab1() {
         // Required empty public constructor
     }
+
+
+    private static final int REQUEST_TAKE_ALBUM = 3333;
 
     /**
      * Use this factory method to create a new instance of
@@ -90,7 +104,7 @@ public class Tab1 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Tab1.
+     * @return A new instance of fragment Tab2.
      */
     // TODO: Rename and change types and number of parameters
     public static Tab1 newInstance(String param1, String param2) {
@@ -111,66 +125,36 @@ public class Tab1 extends Fragment {
         }
     }
 
+    /* @Override
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         // Inflate the layout for this fragment
+         return inflater.inflate(R.layout.fragment_tab2, container, false);
+     }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
+        RecyclerDataAdapter recyclerDataAdapter = new RecyclerDataAdapter();
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        GridLayoutManager manager = new GridLayoutManager (view.getContext(), 5);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(recyclerDataAdapter);
 
+        MyBarAdapter adapter = new MyBarAdapter();
+        RecyclerView myBar = view.findViewById(R.id.myBar);
+        LinearLayoutManager linearManager = new LinearLayoutManager (view.getContext(), LinearLayoutManager.HORIZONTAL,false);
+        myBar.setLayoutManager(linearManager);
+        myBar.setAdapter(adapter);
 
-
-        Button uploadButton =  view.findViewById(R.id.uploadButton);
-        uploadButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-
-                Log.d("dd","downloadButtonclicked");
-                View wholeview = getView();
-                ListView l1 = wholeview.findViewById(R.id.listview);
-                ListUpdate(l1);
-                ContactUpload();
-            }
-        });
-
-        ImageView imageView = view.findViewById(R.id.downloadImage);
-        int resourceID = R.drawable.stitch_phone;
-        Glide.with(this).load(resourceID).into(imageView);
-
-        Button downloadButton =  view.findViewById(R.id.downloadButton);
-        downloadButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                Log.d("dd","downloadButtonclicked");
-                View wholeview = getView();
-                ListView l1 = wholeview.findViewById(R.id.listview);
-                ContactDownload(l1);
-            }
-        });
-
-        final ListView l1 = view.findViewById(R.id.listview);
-        l1.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Tab1ListAdapter.ViewHolder contactHolder = (Tab1ListAdapter.ViewHolder) view.getTag();
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("name", contactHolder.name);
-                    jsonObject.accumulate("number", contactHolder.phoneNum);
-                    jsonArray.put(jsonObject);
-                }catch (Exception e){
-                    Log.d("Exception", e.getMessage());
-                }
-                NetworkTask networkTask = new NetworkTask("api/contacts", "delete", null, jsonArray);
-                networkTask.execute();
-
-            }
-        });
-
-
+        ImageView psa = view.findViewById(R.id.psa);
+        psa.setBackground(new ShapeDrawable(new OvalShape()));
+        if(Build.VERSION.SDK_INT >= 21) {
+            psa.setClipToOutline(true);
+        }
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -181,8 +165,8 @@ public class Tab1 extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof Tab2.OnFragmentInteractionListener) {
+            mListener = (Tab2.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -210,83 +194,18 @@ public class Tab1 extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public View ListUpdate(ListView l1){
-        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,projection,null,null, null);
+    public ArrayList<Bitmap> getThumbList( Uri uri, String[] projection){
+        ArrayList<Bitmap> thumbList = new ArrayList<>();
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if(cursor.moveToFirst()){
+            do{
 
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> phoneNumList = new ArrayList<>();
-
-        while(cursor.moveToNext()) {
-            //CONTACTS.execSQL("CREATE TABLE IF NOT EXISTS people (Name TEXT, Phonenumber TEXT, Favor INTEGER)");
-            // 쿼리문으로 데이터 불러옴
-            String name = cursor.getString(0);
-            String phoneNum = cursor.getString(1);
-            nameList.add(name);
-            phoneNumList.add(phoneNum);
-            mDbOpenHelper.insertColumn(name, phoneNum, 0);
+                Bitmap bmp = BitmapFactory.decodeFile(cursor.getString(0));
+                //thumbList.add(bmp);
+                Bitmap resized = Bitmap.createScaledBitmap(bmp, 360, 360, true);
+                thumbList.add(resized);
+            }while(cursor.moveToNext());
         }
-        cursor.close();
-        Tab1ListAdapter adapter = new Tab1ListAdapter (getContext(), R.layout.list_item, nameList, phoneNumList);
-        l1.setAdapter(adapter);
-
-
-        return l1;
-    }
-
-    public void ContactUpload(){
-        Log.d("dd", "contactupload");
-        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,projection,null,null, null);
-        JSONArray jsonarray = new JSONArray();
-        while(cursor.moveToNext()) {
-            //CONTACTS.execSQL("CREATE TABLE IF NOT EXISTS people (Name TEXT, Phonenumber TEXT, Favor INTEGER)");
-            // 쿼리문으로 데이터 불러옴
-
-            String name = cursor.getString(0);
-            String phoneNum = cursor.getString(1);
-            Contact c = new Contact(name, phoneNum);
-            JSONObject jsonObject = new JSONObject();
-            try {
-                Log.d("Hm..","      GOOD");
-                jsonObject.accumulate("name", name);
-                jsonObject.accumulate("number", phoneNum);
-                jsonarray.put(jsonObject);
-            }catch (Exception e){
-                Log.d("Hm..","      BAD");
-            }
-        }
-
-        NetworkTask contactsUpload = new NetworkTask( "api/contacts", "post", null, jsonarray);
-        contactsUpload.execute();
-
-    }
-    public void ContactDownload(ListView l1){
-
-        Log.d("d","contactDownload is called");
-        NetworkTask getcontacts = new NetworkTask("api/getallcontacts", "get", null, null);
-        getcontacts.execute();
-        Log.d("d","networktask has been excuted");
-        try{
-            String s=  getcontacts.get();
-            Log.d("getcontact:", s);
-            JSONArray contactList = new JSONArray(s);
-            ArrayList<String> nameList = new ArrayList<>();
-            ArrayList<String> phoneNumList = new ArrayList<>();
-
-            for(int i=0; i<contactList.length(); i++){
-                JSONObject json = (JSONObject) contactList.get(i);
-                String name = json.getString("name");
-                String number = json.getString("number");
-
-                nameList.add(name);
-                phoneNumList.add(number);
-            }
-            Tab1ListAdapter adapter = new Tab1ListAdapter (getContext(), R.layout.list_item, nameList, phoneNumList);
-            l1.setAdapter(adapter);
-             }catch (Exception e){
-
-        }
-
+        return thumbList;
     }
 }

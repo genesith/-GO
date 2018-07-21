@@ -19,6 +19,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,45 +144,6 @@ public class Tab2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
-
-        Button btn = (Button) view.findViewById(R.id.galleryUpdate);
-        btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                GridView gridView = getView().findViewById(R.id.gridView);
-                gridUpdate( MediaStore.Images.Media.EXTERNAL_CONTENT_URI, gridView);
-            }
-        });
-
-        Button downloadButton = (Button) view.findViewById(R.id.galleryDownload);
-        downloadButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                GridView gridView = getView().findViewById(R.id.gridView);
-                gridDownload( gridView);
-            }
-        });
-
-
-        ImageView imageView = view.findViewById(R.id.buttonImage);
-        int resourceID = R.drawable.shy;
-        Glide.with(this).load(resourceID).into(imageView);
-
-        GridView gridView = view.findViewById(R.id.gridView);
-        //gridUpdate( MediaStore.Images.Media.EXTERNAL_CONTENT_URI, gridView);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent i = new Intent(getContext(),Imageupg.class);
-                GridAdapter.ViewHolder idHolder = (GridAdapter.ViewHolder) view.getTag();
-                String id = idHolder.id;
-                i.putExtra("index", position);
-                i.putExtra("imageId", id);
-                startActivity(i);
-
-            }
-        });
-
         return view;
     }
     // TODO: Rename method, update argument and hook method into UI event
@@ -219,90 +183,5 @@ public class Tab2 extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public ArrayList<Bitmap> getThumbList( Uri uri, String[] projection){
-        ArrayList<Bitmap> thumbList = new ArrayList<>();
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if(cursor.moveToFirst()){
-            do{
-
-                Bitmap bmp = BitmapFactory.decodeFile(cursor.getString(0));
-                Bitmap resized = Bitmap.createScaledBitmap(bmp, 360, 360, true);
-                thumbList.add(resized);
-            }while(cursor.moveToNext());
-        }
-        return thumbList;
-    }
-
-    public void gridUpdate(Uri uri, GridView view){
-            ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
-            ArrayList<String> idList = new ArrayList<>();
-            for(int i=0; i<thumbList.size(); i++){
-            idList.add("");
-        }
-        GridAdapter gridadapter = new GridAdapter(getContext(), thumbList, idList);
-        view.setAdapter(gridadapter);
-        JSONArray jsonList = new JSONArray();
-
-        for(int i=0; i<thumbList.size(); i++){
-            try {
-                JSONObject json = new JSONObject();
-
-
-                Bitmap bmp = thumbList.get(i);
-                //Bitmap resized = Bitmap.createScaledBitmap(bmp, 360, 360, true);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.JPEG,100, baos);
-                byte[] b = baos.toByteArray();
-                String encodeImg = Base64.encodeToString(b,Base64.DEFAULT);
-                json.accumulate("img", encodeImg);
-
-                jsonList.put(json);
-
-                Log.d("Here", "jsonList.put done");
-            }catch (Exception e){
-                Log.d("Here", "put exception");
-            }
-
-        }
-        String message;
-        try{ message = jsonList.getString(3); }catch (Exception e){ message =  "empty";}
-        Log.d("jsonarray(3)", message);
-        NetworkTask postDBimg = new NetworkTask("api/images","post", null, jsonList);
-        postDBimg.execute();
-    }
-    public void gridDownload(GridView view) {
-        NetworkTask getImages = new NetworkTask("api/getAllImages", "get", null, null);
-        getImages.execute();
-        Log.d("Here", "gridDownload");
-        try {
-            String s = getImages.get();
-
-            JSONArray imageList = new JSONArray(s);
-            ArrayList<Bitmap> thumbList = new ArrayList<>();
-            ArrayList<String> idList = new ArrayList<>();
-            Log.d("why",""+imageList.length());
-            for (int i = 0; i < imageList.length(); i++) {
-
-                JSONObject json = (JSONObject) imageList.get(i);
-                String imageString = json.getString("img");
-                String id = json.getString("_id");
-
-                byte [] encodeByte=Base64.decode(imageString,Base64.DEFAULT);
-
-                InputStream inputStream  = new ByteArrayInputStream(encodeByte);
-                Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
-//                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
-                thumbList.add(bitmap);
-                idList.add(id);
-            }
-
-            GridAdapter gridadapter = new GridAdapter(getContext(), thumbList, idList);
-            Log.d("OOO" ,""+thumbList.size());
-            view.setAdapter(gridadapter);
-        } catch (Exception e) {
-            Log.d("oh", e.getMessage());
-        }
     }
 }

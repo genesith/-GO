@@ -33,7 +33,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Imageupg" />
-        <activity android:name=".LoadingActivity" />
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"

@@ -1,66 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/babypink"
-    tools:context=".Tab1">
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Tab2">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="12dp"
-        android:layout_marginRight="13dp"
-        android:background="@color/transparent"
-        android:visibility="visible" />
-
-    <ImageView
-    android:id="@+id/buttonImage"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:layout_marginBottom="10dp"
-    android:layout_marginRight="10dp"
-    android:src="@drawable/hello_stitch" />
-
-    <ListView
-        android:id="@+id/listview"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:com.android.support="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:choiceMode="singleChoice" />
+        android:layout_height="wrap_content"
+        android:padding="25dp">
 
-    <Button
-        android:id="@+id/downloadButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:background="@color/transparent" />
+        <ImageView
+            android:id="@+id/psa"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/stitch_icon"/>
 
-    <ImageView
-        android:id="@+id/downloadImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/stitch_phone" />
+        <TextView
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="45/50"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            com.android.support:layout_constraintLeft_toRightOf="@+id/psa"
+            com.android.support:layout_constraintTop_toTopOf="@+id/psa" />
+
+        <TextView
+            android:id="@+id/progress2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="도감수집률"
+            android:textColor="#000000"
+            android:textStyle="normal|bold"
+            com.android.support:layout_constraintStart_toStartOf="@+id/progress"
+            com.android.support:layout_constraintTop_toBottomOf="@+id/progress" />
+
+        <TextView
+            android:id="@+id/followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="15k"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            com.android.support:layout_constraintLeft_toRightOf="@+id/progress"
+            com.android.support:layout_constraintTop_toTopOf="@+id/progress" />
+
+        <TextView
+            android:id="@+id/followers2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="팔로워"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            com.android.support:layout_constraintStart_toStartOf="@+id/followers"
+            com.android.support:layout_constraintTop_toBottomOf="@+id/followers" />
+
+        <TextView
+            android:id="@+id/followings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="15k"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            com.android.support:layout_constraintLeft_toRightOf="@+id/followers"
+            com.android.support:layout_constraintTop_toTopOf="@+id/followers" />
+
+        <TextView
+            android:id="@+id/followings2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="팔로잉"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            com.android.support:layout_constraintLeft_toLeftOf="@+id/followings"
+            com.android.support:layout_constraintTop_toBottomOf="@+id/followings" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:com.android.support="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/myInfo"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="한결"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            com.android.support:layout_constraintLeft_toLeftOf="parent"
+            com.android.support:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Lv.17"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            com.android.support:layout_constraintBottom_toBottomOf="@+id/name"
+            com.android.support:layout_constraintLeft_toRightOf="@id/name"
+            com.android.support:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Tonkatsu Serial Killer"
+            android:textSize="15dp"
+            com.android.support:layout_constraintLeft_toLeftOf="parent"
+            com.android.support:layout_constraintTop_toBottomOf="@id/name" />
+    </android.support.constraint.ConstraintLayout>
 
 
 
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#888888"></TextView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:nestedScrollingEnabled="true" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#888888"></TextView>
 
-</RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        ></TextView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="580dp"
+        android:nestedScrollingEnabled="false"
+        />
+</LinearLayout>
+</ScrollView>
