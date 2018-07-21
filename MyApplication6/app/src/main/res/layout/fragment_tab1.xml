@@ -98,10 +98,11 @@
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:com.android.support="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/myInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/myInfo"
-        android:padding="10dp">
+        android:paddingBottom="20dp"
+        android:paddingLeft="8dp">
 
         <TextView
             android:id="@+id/name"
@@ -147,12 +148,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#888888"></TextView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/myBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:nestedScrollingEnabled="true" />
     <TextView
         android:layout_width="match_parent"
