@@ -21,7 +21,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 ReviewFragment tab1 = new ReviewFragment();
                 return tab1;
             case 1:
-                Tab1 tab2 = new Tab1();
+                StatusFragment tab2 = new StatusFragment();
                 return tab2;
             case 2:
                 Tab3 tab3 = new Tab3();

@@ -3,6 +3,7 @@ package com.example.q.myapplication;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,10 +23,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+
+import static com.example.q.myapplication.OnspotVerification.getRestaurantNameFromID;
 
 
 /*
@@ -44,9 +48,9 @@ These should be above a profile-esque list of past posts.
 public class ReviewFragment extends Fragment {
 
     boolean testmode;
-    View ReviewWritingView;
 
-    ArrayList<OnspotVerification> UnpushedCommits = new ArrayList<>();
+
+    ArrayList<OnspotVerification> UnpushedCommits;
 
 
 
@@ -61,12 +65,13 @@ public class ReviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //set to false once things are set up
+        //set this false VIA CODE once things are set up
         testmode = true;
 
 
         // need to simulate 불러와 the onspot verifications lol
         if (testmode) {
+            UnpushedCommits = new ArrayList<>();
             OnspotVerification lol = new OnspotVerification(Calendar.getInstance(TimeZone.getTimeZone("")).getTime(), 2);
             UnpushedCommits.add(lol);
             lol = new OnspotVerification(Calendar.getInstance(TimeZone.getTimeZone("")).getTime(), 5);
@@ -82,7 +87,7 @@ public class ReviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ReviewWritingView = inflater.inflate(R.layout.review_layout, container, false);
+
         // Inflate the layout for this fragment
         viewforuse = inflater.inflate(R.layout.reviewfragment_layout, container, false);
 
@@ -114,7 +119,8 @@ public class ReviewFragment extends Fragment {
 
     private void CommitThisVerification(OnspotVerification Verif){
         Log.i("ang", "Gimotti!!, this is a Verif of ResID: " + Verif.getRestaurantID() + " and Date of " + Verif.getDate().toString());
-
+        GoToWriteActivity(Verif);
+        /*
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this.getActivity());
 
         ImageView VerifImage = ReviewWritingView.findViewById(R.id.ReqImage);
@@ -124,6 +130,7 @@ public class ReviewFragment extends Fragment {
         mBuilder.setView(ReviewWritingView);
         AlertDialog ReviewWriteDialog = mBuilder.create();
         ReviewWriteDialog.show();
+        */
 /*
         mCancelButtonForAddition.setOnClickListener(
                 new Button.OnClickListener(){
@@ -206,4 +213,19 @@ public class ReviewFragment extends Fragment {
         return l1;
     }
 */
+
+    public void GoToWriteActivity(OnspotVerification VerifElement){
+        int REQ_CODE = 123;
+        Intent myIntent = new Intent(getContext(), WriteReviewActivity.class);
+
+        //Possibly need to modify string so that it looks good when received
+
+        SimpleDateFormat df = new SimpleDateFormat("M월 d일. h시 m분 a");
+        df.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
+        String DateString = df.format(VerifElement.getDate());
+
+        myIntent.putExtra("Date", DateString); //Optional parameters
+        myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID())); //Optional parameters
+        startActivityForResult(myIntent, REQ_CODE);
+    }
 }

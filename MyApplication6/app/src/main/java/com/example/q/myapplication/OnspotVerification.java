@@ -40,10 +40,21 @@ public class OnspotVerification {
     public Date getDate(){
         return TimeOfVerification;
     }
+
     public static String getRestaurantNameFromID (int ID){
         //TODO
+        switch(ID) {
+            case 1:
+                return "왕비성";
+            case 2:
+                return "아소부";
+            case 3:
+                return "모리모리";
+            default:
+                return "Restaurant " + ID;
+        }
         //implement dictionary
-        return "Restaurant " + ID;
+
     }
 
 }
