@@ -1,5 +1,6 @@
 package com.example.q.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
@@ -41,19 +42,11 @@ public class OnspotVerification {
         return TimeOfVerification;
     }
 
-    public static String getRestaurantNameFromID (int ID){
+    public static String getRestaurantNameFromID (int ID, Context con){
         //TODO
-        switch(ID) {
-            case 1:
-                return "왕비성";
-            case 2:
-                return "아소부";
-            case 3:
-                return "모리모리";
-            default:
-                return "Restaurant " + ID;
-        }
-        //implement dictionary
+
+        String[] ResList = con.getResources().getStringArray(R.array.restaurant_array);
+        return ResList[ID];
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.q.myapplication;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,8 +11,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener{
 
@@ -22,6 +27,22 @@ public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInt
         makeTabs();
 
     }
+    public void ReportTextClick(View view){
+        Log.i("function for reporting", "it worked");
+    }
+    public void DoAVerification(View view){
+        Log.i("lets write", "gogogo");
+        Intent myIntent = new Intent(this, VerifyingActivity.class);
+        startActivity(myIntent);
+    }
+    public void LikeStatus(View v){
+        ImageView heartImage = (ImageView) v.findViewById(R.id.LikeButton);
+        ViewHolder holder = (ViewHolder) v.getTag();
+
+        Glide.with(this).load(R.drawable.heart).into(heartImage);
+    }
+
+
     @Override
     public void onFragmentInteraction(Uri uri) {
         Toast.makeText(this, "Button Clicked", Toast.LENGTH_SHORT).show();

@@ -2,6 +2,8 @@ package com.example.q.myapplication;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,8 @@ public class StatusFragment extends Fragment {
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,12 +67,7 @@ public class StatusFragment extends Fragment {
 
         // Ask for permissions
         final ListView ListViewVerifications = viewforuse.findViewById(R.id.listview);
-        ListViewVerifications.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(getContext(), "dammm this guy gave a rating of " + StatusFeed.get(position).Stars, Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         StatusListAdapter adapter = new StatusListAdapter (getContext(), R.layout.statuslist_layout, StatusFeed);
         ListViewVerifications.setAdapter(adapter);

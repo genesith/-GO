@@ -5,13 +5,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/ResText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="식당에서의 식사"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/DateTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/DateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="날짜"
+        android:layout_marginRight="10dp"
+        android:paddingTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/ResText"
+
+        />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/update"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ResText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
@@ -35,31 +62,6 @@
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintRight_toRightOf="parent"
         />
-
-    <TextView
-        android:id="@+id/ResText"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:text="식당에서의 식사"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/Stars"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
-
-
-    <ImageView
-        android:id="@+id/LikeButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:srcCompat="@drawable/heartbreak"
-        app:layout_constraintTop_toBottomOf="@id/Stars"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="10dp"
-        />
-
     <TextView
         android:id="@+id/StatusText"
         android:layout_width="0dp"
@@ -67,11 +69,49 @@
         android:text="리뷰"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/LikeButton"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/Stars"
         />
+
+    <ImageView
+        android:id="@+id/LikeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/heartbreak"
+        android:onClick="LikeStatus"
+        app:layout_constraintTop_toBottomOf="@id/StatusText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/LikeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="좋아요를 누른 사람이 없습니다"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/LikeButton"
+        app:layout_constraintTop_toTopOf="@id/LikeButton"
+        app:layout_constraintLeft_toRightOf="@id/LikeButton" />
+    <TextView
+        android:id="@+id/ReportText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="신고하기"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:onClick="ReportTextClick"
+        app:layout_constraintBottom_toBottomOf="@id/LikeButton"
+        app:layout_constraintTop_toTopOf="@id/LikeButton"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
 
 
 

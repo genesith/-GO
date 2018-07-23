@@ -78,7 +78,7 @@ public class VerificationListAdapter extends BaseAdapter {
         date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
         String localTime = date.format(currentLocalTime);
 
-        viewHolder.VerifTextView.setText("@" + getRestaurantNameFromID(viewHolder.ResID) + " " +localTime);
+        viewHolder.VerifTextView.setText("@" + getRestaurantNameFromID(viewHolder.ResID, context) + " " +localTime);
 
         return rowView;
     }

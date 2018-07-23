@@ -34,6 +34,7 @@
         </activity>
         <activity android:name=".Imageupg" />
         <activity android:name=".WriteReviewActivity" />
+        <activity android:name=".VerifyingActivity" />
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"

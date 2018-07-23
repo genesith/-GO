@@ -16,7 +16,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Date = getIntent().getStringExtra("Date");
         ResName = getIntent().getStringExtra("Res");
-        Log.i("lets goooo", "Date is " + Date + " and ResName is " + ResName);
         setContentView(R.layout.review_layout);
         RatingBar StarBar = findViewById(R.id.ratingBar);
 

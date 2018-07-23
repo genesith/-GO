@@ -11,4 +11,47 @@
     <string name="facebook_app_id">178090326382822</string>
     <string name="fb_login_protocol_scheme">fb178090326382822</string>
     <string name="title_activity_tab">TabActivity</string>
+
+    <string-array name="restaurant_array">
+        <item>맑음</item>
+        <item>모리모리 돈부리</item>
+        <item>기시맹</item>
+        <item>봉평옹심이 메밀막국수</item>
+        <item>샌드 브런치</item>
+        <item>소도</item>
+        <item>아메아가리</item>
+        <item>아소부</item>
+        <item>어랑족</item>
+        <item>왕비성</item>
+        <item>이종구 항아리 짬뽕</item>
+        <item>황해 칼국수</item>
+        <item>111-7</item>
+        <item>광장</item>
+        <item>궁손칼국수</item>
+        <item>동해</item>
+        <item>마루</item>
+        <item>마쯔리</item>
+        <item>맛고을</item>
+        <item>베리신주쿠</item>
+        <item>본전</item>
+        <item>삼부자</item>
+        <item>세번째 우물</item>
+        <item>순우리</item>
+        <item>어은스시</item>
+        <item>오마이동</item>
+        <item>우마이</item>
+        <item>은혜감자탕</item>
+        <item>친친화로</item>
+        <item>테라스</item>
+        <item>한우리</item>
+        <item>햇잎갈비</item>
+        <item>훌랄라</item>
+        <item>굴세상</item>
+        <item>고봉민 김밥</item>
+        <item>본죽</item>
+        <item>포에버</item>
+        <item>피자마루</item>
+        <item>플레이버거</item>
+        <item>마쯔미</item>
+    </string-array>
 </resources>

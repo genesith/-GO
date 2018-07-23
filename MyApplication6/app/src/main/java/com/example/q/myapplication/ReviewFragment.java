@@ -215,7 +215,7 @@ public class ReviewFragment extends Fragment {
         String DateString = df.format(VerifElement.getDate());
 
         myIntent.putExtra("Date", DateString); //Optional parameters
-        myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID())); //Optional parameters
+        myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID(), getContext())); //Optional parameters
         startActivityForResult(myIntent, REQ_CODE);
     }
 }

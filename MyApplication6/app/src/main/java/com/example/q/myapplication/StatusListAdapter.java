@@ -1,6 +1,7 @@
 package com.example.q.myapplication;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
+
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import static com.example.q.myapplication.OnspotVerification.getRestaurantNameFromID;
+import static com.example.q.myapplication.StatusClass.getImageForLoad;
 import static com.example.q.myapplication.StatusClass.getUserByUserID;
 
 public class StatusListAdapter extends BaseAdapter {
@@ -24,9 +33,9 @@ public class StatusListAdapter extends BaseAdapter {
         StatusList = StatusFeed;
     }
     // Hold views of the ListView to improve its scrolling performance
-    static class ViewHolder {
+    public class ViewHolder {
         public ImageView TheImage, Heart;
-        public TextView ResText, StarText, StatusText;
+        public TextView ResText, StarText, StatusText, DateText, LikeText;
     }
     public Object getItem(int position) {
         return  StatusList.get(position);
@@ -51,6 +60,9 @@ public class StatusListAdapter extends BaseAdapter {
             viewHolder.ResText= (TextView) rowView.findViewById(R.id.ResText);
             viewHolder.StarText= (TextView) rowView.findViewById(R.id.StarsText);
             viewHolder.StatusText= (TextView) rowView.findViewById(R.id.StatusText);
+            viewHolder.DateText = (TextView) rowView.findViewById(R.id.DateTextView);
+            viewHolder.LikeText = (TextView) rowView.findViewById(R.id.LikeText);
+            viewHolder.Heart= (ImageView) rowView.findViewById(R.id.LikeButton);
 
             rowView.setTag(viewHolder);
         }
@@ -59,11 +71,29 @@ public class StatusListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
         StatusClass temp = StatusList.get(position);
-        viewHolder.ResText.setText( getRestaurantNameFromID(temp.ResID) + "에서의 식사 by " + getUserByUserID(temp.UserID));
+
+
+        String imagestring = getImageForLoad(temp.ImageID);
+        Glide.with(context).load(imagestring).into(viewHolder.TheImage);
+        viewHolder.ResText.setText( getUserByUserID(temp.UserID) + " @" + getRestaurantNameFromID(temp.ResID, context));
         viewHolder.StarText.setText(String.valueOf(temp.Stars));
         viewHolder.StatusText.setText(temp.StatusContent);
 
+        String LikeString = StringForLikes(temp.LikeNumber);
+        viewHolder.LikeText.setText(LikeString);
+        SimpleDateFormat date = new SimpleDateFormat("M월 d일 h시 a");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
+        String localTime = date.format(temp.Date);
+        viewHolder.DateText.setText(localTime);
+
 
         return rowView;
+    }
+
+    String StringForLikes (int num){
+        if (num == 0)
+            return "아직 아무도 좋아요 하지 않았습니다";
+        else
+            return num + "명이 좋아합니다";
     }
 }
