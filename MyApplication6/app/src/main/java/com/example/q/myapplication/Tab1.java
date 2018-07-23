@@ -86,7 +86,7 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
     private String mParam1;
     private String mParam2;
 
-    private Tab2.OnFragmentInteractionListener mListener;
+    private Tab1.OnFragmentInteractionListener mListener;
 
 
     // public static Bitmap[] thumbnails;
@@ -165,8 +165,8 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Tab2.OnFragmentInteractionListener) {
-            mListener = (Tab2.OnFragmentInteractionListener) context;
+        if (context instanceof Tab1.OnFragmentInteractionListener) {
+            mListener = (Tab1.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
