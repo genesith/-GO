@@ -104,14 +104,11 @@ public class MainActivity extends AppCompatActivity {
         goTabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent2 = new Intent( view.getContext(), TabActivity.class);
                 startActivity(intent2);
             }
         });
-
-
-
-
 
         if( (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
                 || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
@@ -139,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Need to access External Storage", Toast.LENGTH_SHORT).show();
         }
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                 MY_PERMISSIONS_REQUEST_READ_CONTACTS);
     }
 

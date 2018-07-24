@@ -11,6 +11,13 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front.autofocus"  android:required="false"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/stitch_icon"
@@ -35,6 +42,7 @@
         <activity android:name=".Imageupg" />
         <activity android:name=".WriteReviewActivity" />
         <activity android:name=".VerifyingActivity" />
+        <activity android:name=".opencvActivity" />
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
