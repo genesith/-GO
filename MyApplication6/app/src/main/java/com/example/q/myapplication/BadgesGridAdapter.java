@@ -1,22 +1,15 @@
 package com.example.q.myapplication;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
 
-public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class BadgesGridAdapter extends RecyclerView.Adapter<ViewHolder> {
     private int badgeList[]
             = { R.drawable.b1, R.drawable.b2, R.drawable.b3, R.drawable.b4,R.drawable.b5, R.drawable.b6,R.drawable.b7,R.drawable.b8,
             R.drawable.b9,R.drawable.b10, R.drawable.b11,R.drawable.b12,R.drawable.b13,R.drawable.b14,R.drawable.b15,R.drawable.b16,
@@ -24,7 +17,7 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder> {
             R.drawable.b25,R.drawable.b26, R.drawable.b27,R.drawable.b28,R.drawable.b29,R.drawable.b30,R.drawable.b31,R.drawable.b32,
             R.drawable.b33,R.drawable.b34, R.drawable.b35,R.drawable.b36,R.drawable.b37,R.drawable.b38,R.drawable.b39,R.drawable.b40
     };
-    public RecyclerDataAdapter( ){
+    public BadgesGridAdapter( ){
     }
 
     @Override
@@ -35,19 +28,37 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<ViewHolder> {
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
+    private BadgesGridAdapter.ItemClick itemClick;
+    public interface ItemClick {
+        public void onClick(View view,int position);
+    }
+
+    //아이템 클릭시 실행 함수 등록 함수
+    public void setItemClick(BadgesGridAdapter.ItemClick itemClick) {
+        this.itemClick = itemClick;
+    }
 
     //RecyclerView의 Row 하나하나를 구현하기위해 Bind(묶이다) 될 때
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        final int Position = position;
+        holder.badgeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick != null){
+                    itemClick.onClick(v, Position);
+                }
+            }
+        });
         //RecyclerView에 들어갈 Data를 기반으로 Row를 생성할 때
         //해당 row의 위치에 해당하는 이미지를 가져와서
  //       if(position > 2 ){
-            ImageView thumbImage = holder.badgeImage;
+            //ImageView thumbImage = holder.badgeImage;
        /*     View profile = holder.profile;
             View horizonScroll = holder.horizonScroll;
             View myBar = holder.myBar;*/
-            thumbImage.setImageResource(badgeList[position]);
+            //thumbImage.setImageResource(badgeList[position]);
+            Glide.with(holder.badgeImage.getContext()).load(badgeList[position]).into(holder.badgeImage);
             //thumbImage.setColorFilter(0xff666666);
 /*            profile.setVisibility(View.GONE);
             horizonScroll.setVisibility(View.GONE);

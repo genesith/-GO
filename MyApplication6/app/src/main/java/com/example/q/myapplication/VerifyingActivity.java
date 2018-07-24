@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,8 +21,10 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
     TextView tv;
     ToggleButton tb;
+    Button submitButton;
     double longitude;
     double latitude;
+    private boolean[] verified = {false, false};
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verificationlayout);
@@ -60,10 +63,29 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                     }else{
+
                         tv.setText("위치정보 미수신중");
                         lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
+
+                        if (longitude > 127.3660 && longitude<127.3661 && latitude > 36.3741 && latitude<36.3742){
+                            tv.setText("인증완료");
+                            verified[0] = true;
+                        }
                     }
                 }catch(SecurityException ex){
+                }
+            }
+        });
+
+        submitButton=findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if (verified[0] == true && verified[1]== true){
+
+                }
+                else{
+
                 }
             }
         });
@@ -77,7 +99,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
-        Log.i("spinner", "NOTHIGN SELECTED");
+        Log.i("spinner", "NOTHING SELECTED");
     }
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -88,14 +110,12 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             Log.d("test", "onLocationChanged, location:" + location);
             longitude = location.getLongitude(); //경도
             latitude = location.getLatitude();   //위도
-            double altitude = location.getAltitude();   //고도
-            float accuracy = location.getAccuracy();    //정확도
-            String provider = location.getProvider();   //위치제공자
+            //String provider = location.getProvider();   //위치제공자
             //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
             //Network 위치제공자에 의한 위치변화
             //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
-            tv.setText("위치정보 : " + provider + "\n위도 : " + latitude + "\n경도 : " + longitude
-                    + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
+            tv.setText( "\n위도 : " + latitude + "\n경도 : " + longitude);
+
         }
         public void onProviderDisabled(String provider) {
             // Disabled시
