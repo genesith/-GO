@@ -1,10 +1,13 @@
 package com.example.q.myapplication;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
@@ -49,6 +53,7 @@ public class ReviewFragment extends Fragment {
     boolean testmode;
     final int REQ_CODE = 123;
 
+    VerificationListAdapter adapter;
     ArrayList<OnspotVerification> UnpushedCommits;
 
 
@@ -129,7 +134,40 @@ public class ReviewFragment extends Fragment {
             }
         });
 
-        VerificationListAdapter adapter = new VerificationListAdapter(getContext(), R.layout.list_item, UnpushedCommits);
+        ListViewVerifications.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                alertDialogBuilder.setMessage("delete this? the int i is " +i);
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                OnspotVerification todelete = UnpushedCommits.get(i);
+                                JSONArray deleteOnspotArray = new JSONArray();
+                                JSONObject deleteOnspot = new JSONObject();
+                                try {
+                                    deleteOnspot.accumulate("date", todelete.getDate());
+                                    deleteOnspot.accumulate("r_id", todelete.getRestaurantID());
+                                    deleteOnspot.accumulate("user_id", TabActivity.UserID);
+                                    deleteOnspotArray.put(deleteOnspot);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                NetworkTask deleteOnspotTask = new NetworkTask("api/onspot", "delete", null, deleteOnspotArray);
+                                deleteOnspotTask.execute();
+                                UnpushedCommits.remove(i);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+
+        });
+
+        adapter = new VerificationListAdapter(getContext(), R.layout.list_item, UnpushedCommits);
 
         ListViewVerifications.setAdapter(adapter);
 

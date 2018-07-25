@@ -202,17 +202,15 @@ public class opencvActivity extends Activity {
                     double compare = Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CHISQR);
                     Log.d("ImageComparator", "compare: "+compare);
                     if(compare>=0 && compare<8000) {
-                        Toast.makeText(opencvActivity.this, "Good enough, got " + compare, Toast.LENGTH_LONG).show();
+                        Toast.makeText(opencvActivity.this, "인증에 성공했습니다", Toast.LENGTH_LONG).show();
                         Intent returnintent = getIntent();
                         returnintent.putExtra("tf", true);
                         setResult(RESULT_OK, returnintent);
                         finish();
                         //new asyncTask(opencvActivity.this).execute();
                     }
-                    else if(compare==0)
-                        Toast.makeText(opencvActivity.this, "Images are exact duplicates" + compare, Toast.LENGTH_LONG).show();
                     else {
-                        Toast.makeText(opencvActivity.this, "Images are not duplicates" + compare, Toast.LENGTH_LONG).show();
+                        Toast.makeText(opencvActivity.this, "인증에 실패했습니다", Toast.LENGTH_LONG).show();
                         Intent returnintent = getIntent();
                         returnintent.putExtra("tf", false);
                         setResult(RESULT_OK, returnintent);

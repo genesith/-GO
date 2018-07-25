@@ -167,12 +167,14 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
         }
     }
 
-    private void SetUpProfile(View view, ProfileClass profile){
+    private void SetUpProfile(View view, final ProfileClass profile){
         BadgesGridAdapter gridAdapter = new BadgesGridAdapter(profile.badgelist);
         gridAdapter.setItemClick(new BadgesGridAdapter.ItemClick(){
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(getContext(), RestaurantInfo.class);
+                intent.putExtra("position", position);
+                intent.putExtra("caught", profile.badgelist[position]);
                 startActivity(intent);
             }
         });
