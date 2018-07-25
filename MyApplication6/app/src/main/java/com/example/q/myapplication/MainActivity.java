@@ -136,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Need to access External Storage", Toast.LENGTH_SHORT).show();
         }
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION},
+
+                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION},
                 MY_PERMISSIONS_REQUEST_READ_CONTACTS);
     }
 
