@@ -48,7 +48,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         setContentView(R.layout.review_layout);
         final RatingBar StarBar = findViewById(R.id.ratingBar);
         Button save = findViewById(R.id.SaveButton);
-        Button cancel = findViewById(R.id.cancel_button);
+        Button cancel = findViewById(R.id.CancelButton);
         final EditText reviewContent = findViewById(R.id.ReviewEditText);
         uploadhere = findViewById(R.id.ReqImage);
 
@@ -58,6 +58,15 @@ public class WriteReviewActivity extends AppCompatActivity {
         ResTextView.setText(ResName + "에서의 식사");
         TextView DateTextView = findViewById(R.id.DateTextView);
         DateTextView.setText("현장 인증이 " + Date + "에 완료 되었습니다");
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View a) {
+                finish();
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
 

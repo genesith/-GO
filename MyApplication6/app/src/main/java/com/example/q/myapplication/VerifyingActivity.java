@@ -99,6 +99,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                         Log.i("Long and Lat", longitude + " " +latitude);
                         if (longitude<cutoff && longitude > - cutoff && latitude<cutoff && latitude > - cutoff){
                             tv.setText("인증 완료!!");
+
                             verified[0] = true;
                         }
                         else{
@@ -142,8 +143,10 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                     postOnspot.execute();
 
                     Toast.makeText( VerifyingActivity.this, "현장 인증 성공!", Toast.LENGTH_LONG).show();
+
                     Toast.makeText( VerifyingActivity.this, "맛있게 식사하신 후 리뷰를 작성해주세요", Toast.LENGTH_LONG).show();
                     finish();
+
                 }
                 else{
                     Toast.makeText( VerifyingActivity.this, "인증이 완료되지 않아 제출할 수 없습니다", Toast.LENGTH_LONG).show();
@@ -170,6 +173,9 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
     {
         if (data!=null) {
             verified[1] = data.getExtras().getBoolean("tf");
+            if(verified[1]){
+                findViewById(R.id.cameracheckdone).setVisibility(View.VISIBLE);
+            }
         }
     }
     public void onItemSelected(AdapterView<?> parent, View view,
@@ -203,6 +209,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             latitude -= Res_latitude;
 
             if (longitude<cutoff && longitude > - cutoff && latitude<cutoff && latitude > - cutoff){
+                findViewById(R.id.gpscheckdone).setVisibility(View.VISIBLE);
                 tv.setText("인증 완료!!");
                 verified[0] = true;
             }
