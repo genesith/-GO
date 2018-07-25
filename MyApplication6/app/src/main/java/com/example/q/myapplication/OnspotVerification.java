@@ -17,8 +17,9 @@ public class OnspotVerification {
     //식당 아이디 (int), 시간 (Date)
     // )
 //
-    private Date TimeOfVerification;
+    private String TimeOfVerification;
     private int Restaurant;
+
 
     public void printtime()
     {
@@ -31,14 +32,14 @@ public class OnspotVerification {
         Log.i("wow", ""+ currentLocalTime);
     }
 
-    public OnspotVerification(Date CurrentTime, int restaurantID){
+    public OnspotVerification(String CurrentTime, int restaurantID){
         TimeOfVerification = CurrentTime;
         Restaurant = restaurantID;
     }
     public int getRestaurantID(){
         return Restaurant;
     }
-    public Date getDate(){
+    public String getDate(){
         return TimeOfVerification;
     }
 

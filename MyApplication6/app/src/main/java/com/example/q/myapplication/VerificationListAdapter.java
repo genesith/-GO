@@ -42,7 +42,7 @@ public class VerificationListAdapter extends BaseAdapter {
     static class ViewHolder {
         public TextView VerifTextView, DateView;
         public int ResID;
-        public Date VerifDate;
+        public String VerifDate;
     }
     public Object getItem(int position) {
         return  VerifsList.get(position);
@@ -77,13 +77,8 @@ public class VerificationListAdapter extends BaseAdapter {
             viewHolder.DateView = (TextView) rowView.findViewById(R.id.VerifDateText);
         }
 
-        Date currentLocalTime = viewHolder.VerifDate;
-        SimpleDateFormat date = new SimpleDateFormat("h:m a, M/d");
-        date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
-        String localTime = date.format(currentLocalTime);
-
         viewHolder.VerifTextView.setText("@" + getRestaurantNameFromID(viewHolder.ResID, context));
-        viewHolder.DateView.setText(localTime);
+        viewHolder.DateView.setText(viewHolder.VerifDate);
 
 
         return rowView;
