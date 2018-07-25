@@ -136,11 +136,19 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
-        RecyclerDataAdapter recyclerDataAdapter = new RecyclerDataAdapter();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        BadgesGridAdapter gridAdapter = new BadgesGridAdapter();
+        gridAdapter.setItemClick(new BadgesGridAdapter.ItemClick(){
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), RestaurantInfo.class);
+                    startActivity(intent);
+                }
+            });
+        RecyclerView badgesView = view.findViewById(R.id.recyclerView);
         GridLayoutManager manager = new GridLayoutManager (view.getContext(), 5);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(recyclerDataAdapter);
+        badgesView.setLayoutManager(manager);
+        badgesView.setAdapter(gridAdapter);
+
 
         MyBarAdapter adapter = new MyBarAdapter();
         RecyclerView myBar = view.findViewById(R.id.myBar);
@@ -192,20 +200,5 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public ArrayList<Bitmap> getThumbList( Uri uri, String[] projection){
-        ArrayList<Bitmap> thumbList = new ArrayList<>();
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if(cursor.moveToFirst()){
-            do{
-
-                Bitmap bmp = BitmapFactory.decodeFile(cursor.getString(0));
-                //thumbList.add(bmp);
-                Bitmap resized = Bitmap.createScaledBitmap(bmp, 360, 360, true);
-                thumbList.add(resized);
-            }while(cursor.moveToNext());
-        }
-        return thumbList;
     }
 }

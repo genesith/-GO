@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,14 @@ public class Tab4 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
-        ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
-        PopularAdapter adapter = new PopularAdapter(thumbList);
+        //ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
+        //PopularAdapter adapter = new PopularAdapter(thumbList);
+        PopularAdapter adapter = new PopularAdapter(getStringList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA}));
         RecyclerView recyclerView = view.findViewById(R.id.popularView);
-        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(),3));
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+ //       layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(),3));
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -129,6 +134,17 @@ public class Tab4 extends Fragment {
 
                 Bitmap bmp = BitmapFactory.decodeFile(cursor.getString(0));
                 thumbList.add(bmp);
+            }while(cursor.moveToNext());
+        }
+        return thumbList;
+    }
+
+    public ArrayList<String> getStringList( Uri uri, String[] projection){
+        ArrayList<String> thumbList = new ArrayList<>();
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if(cursor.moveToFirst()){
+            do{
+                thumbList.add(cursor.getString(0));
             }while(cursor.moveToNext());
         }
         return thumbList;

@@ -1,6 +1,7 @@
 package com.example.q.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,8 +22,20 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
     TextView tv;
     ToggleButton tb;
-    double longitude;
-    double latitude;
+    Button submitButton, PicCompare;
+    double longitude = 1;
+    double latitude = 1;
+    double cutoff = 0.0007;
+
+    double Res_longitude;
+    double Res_latitude;
+
+
+
+
+
+    private boolean[] verified = {false, false};
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verificationlayout);
@@ -35,6 +49,9 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        //for ACTUAL app, this should come from known data depending on restaurant, but this is now set to Kaist N1
+        Res_longitude = 127.366038;
+        Res_latitude = 36.374170;
 
         tv = (TextView) findViewById(R.id.textView2);
         tv.setText("위치정보 미수신중");
@@ -60,11 +77,42 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                     }else{
+
                         tv.setText("위치정보 미수신중");
                         lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
+                        Log.i("Long and Lat", longitude + " " +latitude);
+                        if (longitude<cutoff && longitude > - cutoff && latitude<cutoff && latitude > - cutoff){
+                            tv.setText("인증 완료!!");
+                            verified[0] = true;
+                        }
+                        else{
+                            tv.setText("인증실패! 다시 시도 해주세요");
+                            verified[0] = false;
+                        }
                     }
                 }catch(SecurityException ex){
                 }
+            }
+        });
+
+        submitButton=findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if (verified[0] == true && verified[1]== true){
+                    Log.i("submit", "should work!");
+                }
+                else{
+                    Log.i("submit", "should not work! " + verified[0] + " " + verified[1]);
+                }
+            }
+        });
+
+        PicCompare=findViewById(R.id.submitButton);
+        PicCompare.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //Intent CompareIntent = new Intent (this, open)
             }
         });
 
@@ -77,7 +125,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
-        Log.i("spinner", "NOTHIGN SELECTED");
+        Log.i("spinner", "NOTHING SELECTED");
     }
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -88,14 +136,24 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             Log.d("test", "onLocationChanged, location:" + location);
             longitude = location.getLongitude(); //경도
             latitude = location.getLatitude();   //위도
-            double altitude = location.getAltitude();   //고도
-            float accuracy = location.getAccuracy();    //정확도
-            String provider = location.getProvider();   //위치제공자
+            //String provider = location.getProvider();   //위치제공자
             //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
             //Network 위치제공자에 의한 위치변화
             //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
-            tv.setText("위치정보 : " + provider + "\n위도 : " + latitude + "\n경도 : " + longitude
-                    + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
+
+            //tv.setText("위치정보 : " + provider + "\n위도 : " + latitude + "\n경도 : " + longitude + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
+            longitude -= Res_longitude;
+            latitude -= Res_latitude;
+
+            if (longitude<cutoff && longitude > - cutoff && latitude<cutoff && latitude > - cutoff){
+                tv.setText("인증 완료!!");
+                verified[0] = true;
+            }
+            else {
+                tv.setText("인증이 실패했습니다");
+                verified[0] = false;
+            }
+
         }
         public void onProviderDisabled(String provider) {
             // Disabled시
