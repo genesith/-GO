@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mapground"
-    android:backgroundTint="#555555"
+    android:backgroundTint="#666666"
     android:backgroundTintMode="multiply"
     tools:context=".MainActivity">
 

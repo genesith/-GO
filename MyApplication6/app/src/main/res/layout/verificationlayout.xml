@@ -37,12 +37,13 @@
         app:layout_constraintTop_toBottomOf="@id/spinnerboi" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/step2text"
-        android:orientation="vertical" >
+        app:layout_constraintTop_toBottomOf="@id/step2text">
 
         <TextView
             android:id="@+id/textView1"
@@ -63,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOff="위치 인증"
-            android:textOn="위치 인증 취소"/>
+            android:textOn="위치 인증 취소" />
 
 
     </LinearLayout>
@@ -99,5 +100,50 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"/>
+
+    <ImageView
+        android:id="@+id/gpscheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/check" />
+
+    <ImageView
+        android:id="@+id/gpscheckdone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/check2"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/cameracheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ComparePicButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/check" />
+
+    <ImageView
+        android:id="@+id/cameracheckdone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ComparePicButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/check2"
+        android:visibility="invisible"/>
 
 </android.support.constraint.ConstraintLayout>

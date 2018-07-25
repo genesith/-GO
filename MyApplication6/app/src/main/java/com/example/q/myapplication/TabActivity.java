@@ -46,13 +46,14 @@ public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInt
     public void makeTabs(){
         TabLayout tabLayout =  findViewById(R.id.tablayout);
         Resources res = getResources();
-        Drawable phonebook = res.getDrawable(R.drawable.phonebook);
-        Drawable galleryImage = res.getDrawable(R.drawable.gallery_image);
-        Drawable calendar = res.getDrawable(R.drawable.calendar);
-        tabLayout.addTab(tabLayout.newTab().setIcon(phonebook));
-        tabLayout.addTab(tabLayout.newTab().setIcon(galleryImage));
-        tabLayout.addTab(tabLayout.newTab().setIcon(calendar));
-        tabLayout.addTab(tabLayout.newTab().setText("popular"));
+        Drawable profile = res.getDrawable(R.drawable.profile);
+        Drawable newsfeed = res.getDrawable(R.drawable.newsfeed);
+        Drawable check = res.getDrawable(R.drawable.check);
+        Drawable popular = res.getDrawable(R.drawable.popular);
+        tabLayout.addTab(tabLayout.newTab().setIcon(profile));
+        tabLayout.addTab(tabLayout.newTab().setIcon(newsfeed));
+        tabLayout.addTab(tabLayout.newTab().setIcon(check));
+        tabLayout.addTab(tabLayout.newTab().setIcon(popular));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final ViewPager viewPager = findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
