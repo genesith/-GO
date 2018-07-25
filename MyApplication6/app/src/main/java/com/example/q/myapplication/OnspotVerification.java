@@ -47,7 +47,5 @@ public class OnspotVerification {
 
         String[] ResList = con.getResources().getStringArray(R.array.restaurant_array);
         return ResList[ID];
-
     }
-
 }
