@@ -104,14 +104,11 @@ public class MainActivity extends AppCompatActivity {
         goTabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent2 = new Intent( view.getContext(), TabActivity.class);
                 startActivity(intent2);
             }
         });
-
-
-
-
 
         if( (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
                 || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
