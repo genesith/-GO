@@ -142,11 +142,11 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                     postOnspot.execute();
 
                     Toast.makeText( VerifyingActivity.this, "현장 인증 성공!", Toast.LENGTH_LONG).show();
-                    Toast.makeText( VerifyingActivity.this, "맛있게 식사하신 후 리뷰를 작성해주세요" + verified[0] + " " + verified[1], Toast.LENGTH_LONG).show();
+                    Toast.makeText( VerifyingActivity.this, "맛있게 식사하신 후 리뷰를 작성해주세요", Toast.LENGTH_LONG).show();
                     finish();
                 }
                 else{
-                    Toast.makeText( VerifyingActivity.this, "인증이 완료되지 않아 제출할 수 없습니다 ", Toast.LENGTH_LONG).show();
+                    Toast.makeText( VerifyingActivity.this, "인증이 완료되지 않아 제출할 수 없습니다", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import org.w3c.dom.Text;
 
@@ -90,6 +91,8 @@ public class StatusListAdapter extends BaseAdapter {
         Bitmap bitmap = BitmapFactory.decodeStream(istream);
         bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()*8/10, (Integer)bitmap.getHeight()*8/10,true);
         viewHolder.TheImage.setImageBitmap(bitmap);
+        viewHolder.TheImage.setAdjustViewBounds(true);
+        viewHolder.TheImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         //Glide.with(context).load(bitmap.into).into(viewHolder.TheImage);
         viewHolder.ResText.setText(temp.UserID + " @" + getRestaurantNameFromID(temp.ResCode, context));
         viewHolder.StarText.setText(String.valueOf(temp.Stars));
