@@ -28,6 +28,14 @@ public class ProfileClass {
             boolean[] array = new boolean[40];
             for (char ch:ParseMe.toCharArray()){
                 switch (ch){
+                    case '0':
+                        array[temp] = false;
+                        array[temp+1] = false;
+                        array[temp+2] = false;
+                        array[temp+3] = false;
+                        temp +=4;
+                        count += 1;
+                        break;
                     case '1':
                         array[temp] = false;
                         array[temp+1] = false;
