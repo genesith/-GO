@@ -124,7 +124,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
                         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(""));
                         Date currentLocalTime = cal.getTime();
-                        SimpleDateFormat date = new SimpleDateFormat("M월 d일. h시 m분 a");
+                        SimpleDateFormat date = new SimpleDateFormat("h:m a, M/d");
                         // you can get seconds by adding  "...:ss" to it
                         date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
                         String localTime = date.format(currentLocalTime);

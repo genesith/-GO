@@ -3,9 +3,12 @@ package com.example.q.myapplication;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,10 +65,10 @@ public class ReviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //set this false VIA CODE once SERVER things are set up
-        testmode = true;
+        testmode = false;
 
 
-        // need to simulate 불러와 the onspot verifications lol
+/*        // need to simulate 불러와 the onspot verifications lol
         if (testmode) {
             UnpushedCommits = new ArrayList<>();
             OnspotVerification lol = new OnspotVerification(Calendar.getInstance(TimeZone.getTimeZone("")).getTime(), 2);
@@ -71,7 +79,7 @@ public class ReviewFragment extends Fragment {
         else{
             //SERVER
             //write code about getting the list through server
-        }
+        }*/
 
 
     }
@@ -83,9 +91,35 @@ public class ReviewFragment extends Fragment {
         // Inflate the layout for this fragment
         viewforuse = inflater.inflate(R.layout.reviewfragment_layout, container, false);
 
+
+
         // Ask for permissions
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
             return viewforuse;
+
+        UnpushedCommits = new ArrayList<>();
+        NetworkTask getOnspots = new NetworkTask("api/getallonspots", "get", null, null);
+        getOnspots.execute();
+        try {
+            String s = getOnspots.get();
+            JSONArray onspotList = new JSONArray(s);
+            if( s == null){
+                Log.d("um..","sad");
+            }
+            Log.d("why",""+ onspotList.length());
+            for (int i = 0; i < onspotList.length(); i++) {
+
+                JSONObject json = (JSONObject) onspotList.get(i);
+                int ResCode = Integer.parseInt(json.getString("r_id"));
+                String date = json.getString("date");
+                OnspotVerification onspot = new OnspotVerification(date, ResCode);
+
+                UnpushedCommits.add(onspot);
+            }
+
+        } catch (Exception e) {
+            Log.d("oh", e.getMessage());
+        }
 
         final ListView ListViewVerifications = viewforuse.findViewById(R.id.listview);
         ListViewVerifications.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -154,9 +188,9 @@ public class ReviewFragment extends Fragment {
 
         //Possibly need to modify string so that it looks good when received
 
-        SimpleDateFormat df = new SimpleDateFormat("M월 d일. h시 m분 a");
-        df.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
-        String DateString = df.format(VerifElement.getDate());
+        //SimpleDateFormat df = new SimpleDateFormat("M월 d일. h시 m분 a");
+        //df.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
+        String DateString = VerifElement.getDate();
 
         myIntent.putExtra("Date", DateString); //Optional parameters
         myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID(), getContext())); //Optional parameters
