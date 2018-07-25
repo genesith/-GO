@@ -68,6 +68,7 @@ public class ReviewFragment extends Fragment {
             UnpushedCommits.add(lol);
         }
         else{
+            //SERVER
             //write code about getting the list through server
         }
 

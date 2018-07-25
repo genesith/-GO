@@ -47,7 +47,7 @@ public class StatusListAdapter extends BaseAdapter {
         return StatusList.size();
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View rowView = convertView;
         ViewHolder viewHolder;
@@ -63,22 +63,40 @@ public class StatusListAdapter extends BaseAdapter {
             viewHolder.DateText = (TextView) rowView.findViewById(R.id.DateTextView);
             viewHolder.LikeText = (TextView) rowView.findViewById(R.id.LikeText);
             viewHolder.Heart= (ImageView) rowView.findViewById(R.id.LikeButton);
-
             rowView.setTag(viewHolder);
         }
         // Set text to each TextView of ListView item
         else{
             viewHolder = (ViewHolder) rowView.getTag();
         }
-        StatusClass temp = StatusList.get(position);
+        final StatusClass temp = StatusList.get(position);
 
-
+        if (temp.liked){
+            Glide.with(context).load(R.drawable.heart).into(viewHolder.Heart);
+        }
+        else{
+            Glide.with(context).load(R.drawable.heartbreak).into(viewHolder.Heart);
+        }
         String imagestring = getImageForLoad(temp.ImageID);
         Glide.with(context).load(imagestring).into(viewHolder.TheImage);
         viewHolder.ResText.setText( getUserByUserID(temp.UserID) + " @" + getRestaurantNameFromID(temp.ResID, context));
         viewHolder.StarText.setText(String.valueOf(temp.Stars));
         viewHolder.StatusText.setText(temp.StatusContent);
 
+        viewHolder.Heart.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //SERVER
+                StatusList.get(position).liked = !StatusList.get(position).liked;
+                if (StatusList.get(position).liked){
+                    Glide.with(context).load(R.drawable.heart).into((ImageView) v);
+                }
+                else{
+                    Glide.with(context).load(R.drawable.heartbreak).into((ImageView) v);
+                }
+            }
+        }
+            );
         String LikeString = StringForLikes(temp.LikeNumber);
         viewHolder.LikeText.setText(LikeString);
         SimpleDateFormat date = new SimpleDateFormat("M월 d일 h시 a");

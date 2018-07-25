@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import static com.example.q.myapplication.OnspotVerification.getRestaurantNameFromID;
+
 public class VerifyingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     int ResID;
 
@@ -27,7 +29,6 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
     double longitude = 1;
     double latitude = 1;
     double cutoff = 0.0007;
-
     double Res_longitude;
     double Res_latitude;
 
@@ -113,21 +114,33 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             }
         });
 
-        PicCompare=findViewById(R.id.submitButton);
+        PicCompare=findViewById(R.id.ComparePicButton);
         PicCompare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //Intent CompareIntent = new Intent (this, open)
+                int REQ_CODE = 54;
+                Intent CompareIntent = new Intent (VerifyingActivity.this, opencvActivity.class);
+                CompareIntent.putExtra("ResName", getRestaurantNameFromID(ResID, getApplicationContext()));
+                startActivityForResult(CompareIntent, REQ_CODE);
 
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode, Intent data)
+    {
+        if (data!=null) {
+            verified[1] = data.getExtras().getBoolean("tf");
+        }
     }
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
         Log.i("spinner", "SELECTED POS" + pos);
+        ResID = pos;
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback

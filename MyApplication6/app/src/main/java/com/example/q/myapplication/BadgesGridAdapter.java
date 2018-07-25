@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 public class BadgesGridAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private boolean[] BoolList;
     private int badgeList[]
             = { R.drawable.b1, R.drawable.b2, R.drawable.b3, R.drawable.b4,R.drawable.b5, R.drawable.b6,R.drawable.b7,R.drawable.b8,
             R.drawable.b9,R.drawable.b10, R.drawable.b11,R.drawable.b12,R.drawable.b13,R.drawable.b14,R.drawable.b15,R.drawable.b16,
@@ -17,7 +18,8 @@ public class BadgesGridAdapter extends RecyclerView.Adapter<ViewHolder> {
             R.drawable.b25,R.drawable.b26, R.drawable.b27,R.drawable.b28,R.drawable.b29,R.drawable.b30,R.drawable.b31,R.drawable.b32,
             R.drawable.b33,R.drawable.b34, R.drawable.b35,R.drawable.b36,R.drawable.b37,R.drawable.b38,R.drawable.b39,R.drawable.b40
     };
-    public BadgesGridAdapter( ){
+    public BadgesGridAdapter(boolean[] newlist){
+        BoolList = newlist;
     }
 
     @Override
@@ -59,7 +61,8 @@ public class BadgesGridAdapter extends RecyclerView.Adapter<ViewHolder> {
             View myBar = holder.myBar;*/
             //thumbImage.setImageResource(badgeList[position]);
             Glide.with(holder.badgeImage.getContext()).load(badgeList[position]).into(holder.badgeImage);
-            //thumbImage.setColorFilter(0xff666666);
+            if(!BoolList[position])
+                holder.badgeImage.setColorFilter(0xff666666);
 /*            profile.setVisibility(View.GONE);
             horizonScroll.setVisibility(View.GONE);
             myBar.setVisibility(View.GONE);*/

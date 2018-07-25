@@ -201,19 +201,28 @@ public class opencvActivity extends Activity {
 
                     double compare = Imgproc.compareHist(hist1, hist2, Imgproc.CV_COMP_CHISQR);
                     Log.d("ImageComparator", "compare: "+compare);
-                    if(compare>0 && compare<8000) {
-                        Toast.makeText(opencvActivity.this, "Images may be possible duplicates, verifying " + compare, Toast.LENGTH_LONG).show();
+                    if(compare>=0 && compare<8000) {
+                        Toast.makeText(opencvActivity.this, "Good enough, got " + compare, Toast.LENGTH_LONG).show();
+                        Intent returnintent = getIntent();
+                        returnintent.putExtra("tf", true);
+                        setResult(RESULT_OK, returnintent);
+                        finish();
                         //new asyncTask(opencvActivity.this).execute();
                     }
                     else if(compare==0)
                         Toast.makeText(opencvActivity.this, "Images are exact duplicates" + compare, Toast.LENGTH_LONG).show();
-                    else
+                    else {
                         Toast.makeText(opencvActivity.this, "Images are not duplicates" + compare, Toast.LENGTH_LONG).show();
+                        Intent returnintent = getIntent();
+                        returnintent.putExtra("tf", false);
+                        setResult(RESULT_OK, returnintent);
+                        finish();
+                    }
 
                     startTime = System.currentTimeMillis();
                 } else
                     Toast.makeText(opencvActivity.this,
-                            "You haven1't selected images.", Toast.LENGTH_LONG)
+                            "You haven't taken a photo", Toast.LENGTH_LONG)
                             .show();
             }
         });

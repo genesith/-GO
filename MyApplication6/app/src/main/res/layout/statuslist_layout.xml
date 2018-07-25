@@ -81,7 +81,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:srcCompat="@drawable/heartbreak"
-        android:onClick="LikeStatus"
         app:layout_constraintTop_toBottomOf="@id/StatusText"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="10dp"

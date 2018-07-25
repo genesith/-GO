@@ -30,6 +30,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -69,7 +70,8 @@ import java.util.Objects;
 import static com.example.q.myapplication.MainActivity.mDbOpenHelper;
 
 
-/**
+
+/*
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link Tab1.OnFragmentInteractionListener} interface
@@ -79,8 +81,8 @@ import static com.example.q.myapplication.MainActivity.mDbOpenHelper;
  */
 public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    //private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,7 +100,7 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
 
     private static final int REQUEST_TAKE_ALBUM = 3333;
 
-    /**
+    /*
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -107,6 +109,7 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
      * @return A new instance of fragment Tab2.
      */
     // TODO: Rename and change types and number of parameters
+   /*
     public static Tab1 newInstance(String param1, String param2) {
         Tab1 fragment = new Tab1();
         Bundle args = new Bundle();
@@ -114,15 +117,16 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     /* @Override
@@ -136,19 +140,48 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
-        BadgesGridAdapter gridAdapter = new BadgesGridAdapter();
+        //SERVER
+        boolean ServerReady = false;
+        ProfileClass prof = null;
+        if (ServerReady){
+            //getProfileFromServer
+        }
+        else {
+            prof = new ProfileClass();
+
+            prof.Username = "갓우진";
+            prof.MakeBadgeList("3456789ABC");
+            prof.followernum = 5;
+            prof.followingnum = 5;
+            prof.XP = 2400;
+            prof.Chingho = 1;
+        }
+        if (prof != null)
+            SetUpProfile(view, prof);
+        return view;
+    }
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    private void SetUpProfile(View view, ProfileClass profile){
+        BadgesGridAdapter gridAdapter = new BadgesGridAdapter(profile.badgelist);
         gridAdapter.setItemClick(new BadgesGridAdapter.ItemClick(){
-                @Override
-                public void onClick(View view, int position) {
-                    Intent intent = new Intent(getContext(), RestaurantInfo.class);
-                    startActivity(intent);
-                }
-            });
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getContext(), RestaurantInfo.class);
+                startActivity(intent);
+            }
+        });
         RecyclerView badgesView = view.findViewById(R.id.recyclerView);
         GridLayoutManager manager = new GridLayoutManager (view.getContext(), 5);
         badgesView.setLayoutManager(manager);
         badgesView.setAdapter(gridAdapter);
-
+        //todo
+        //prof.BadgesParseString = "3456789ABC";
 
         MyBarAdapter adapter = new MyBarAdapter();
         RecyclerView myBar = view.findViewById(R.id.myBar);
@@ -161,13 +194,20 @@ public class Tab1 extends Fragment {    // TODO: Rename parameter arguments, cho
         if(Build.VERSION.SDK_INT >= 21) {
             psa.setClipToOutline(true);
         }
-        return view;
-    }
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        // set the individual texts from the profile info
+        TextView temp = view.findViewById(R.id.name);
+        temp.setText(profile.Username);
+        temp = view.findViewById(R.id.progress);
+        temp.setText(Integer.toString(profile.completion) + "/50");
+        temp = view.findViewById(R.id.followers);
+        temp.setText(Integer.toString(profile.followernum));
+        temp = view.findViewById(R.id.followings);
+        temp.setText(Integer.toString(profile.followingnum));
+        temp = view.findViewById(R.id.level);
+        temp.setText("Lvl. " + Integer.toString(profile.LevelFromXP()));
+        temp = view.findViewById(R.id.title);
+        temp.setText(profile.Chinghofromint());
+
     }
 
     @Override

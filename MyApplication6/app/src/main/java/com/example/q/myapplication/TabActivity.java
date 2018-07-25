@@ -35,12 +35,6 @@ public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInt
         Intent myIntent = new Intent(this, VerifyingActivity.class);
         startActivity(myIntent);
     }
-    public void LikeStatus(View v){
-        ImageView heartImage = (ImageView) v.findViewById(R.id.LikeButton);
-        ViewHolder holder = (ViewHolder) v.getTag();
-
-        Glide.with(this).load(R.drawable.heart).into(heartImage);
-    }
 
 
     @Override

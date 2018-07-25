@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if( (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
-                || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
+                || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED))
         {
             Permissions();
         }
@@ -134,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)){
             Toast.makeText(this, "Need to access External Storage", Toast.LENGTH_SHORT).show();
+        }
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)){
+            Toast.makeText(this, "Need to access location", Toast.LENGTH_SHORT).show();
         }
         ActivityCompat.requestPermissions(this,
 

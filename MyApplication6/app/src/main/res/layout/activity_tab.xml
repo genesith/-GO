@@ -61,13 +61,12 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"></android.support.v4.view.ViewPager>
 
     <ImageView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:id="@+id/semicircle"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:onClick="DoAVerification"
+        android:src="@drawable/semicirclev2"
         app:layout_constraintBottom_toTopOf="@id/tablayout"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/semicircle"
-        android:src="@drawable/semicirclev2"
-        android:onClick="DoAVerification"
-        />
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

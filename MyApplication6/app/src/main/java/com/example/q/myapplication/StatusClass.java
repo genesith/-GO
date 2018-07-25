@@ -12,7 +12,7 @@ public class StatusClass {
     int UserID;
     Date Date;
     int LikeNumber = 1;
-    boolean liked = true;
+    boolean liked = false;
 
     public StatusClass(int UserID_, int ResID_, int ImageID_, float Stars_, String StatusContent_, Date Date_){
         UserID= UserID_;
