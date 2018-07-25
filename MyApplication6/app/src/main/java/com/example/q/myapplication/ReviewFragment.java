@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.q.myapplication.OnspotVerification.getRestaurantNameFromID;
 
 
@@ -38,7 +39,7 @@ These should be above a profile-esque list of past posts.
 public class ReviewFragment extends Fragment {
 
     boolean testmode;
-
+    final int REQ_CODE = 123;
 
     ArrayList<OnspotVerification> UnpushedCommits;
 
@@ -55,7 +56,7 @@ public class ReviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //set this false VIA CODE once things are set up
+        //set this false VIA CODE once SERVER things are set up
         testmode = true;
 
 
@@ -148,7 +149,7 @@ public class ReviewFragment extends Fragment {
 
 
     public void GoToWriteActivity(OnspotVerification VerifElement){
-        int REQ_CODE = 123;
+
         Intent myIntent = new Intent(getContext(), WriteReviewActivity.class);
 
         //Possibly need to modify string so that it looks good when received
@@ -160,5 +161,18 @@ public class ReviewFragment extends Fragment {
         myIntent.putExtra("Date", DateString); //Optional parameters
         myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID(), getContext())); //Optional parameters
         startActivityForResult(myIntent, REQ_CODE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                    Intent ReviewIntent) {
+        super.onActivityResult(requestCode, resultCode, ReviewIntent);
+        switch (requestCode) {
+            case REQ_CODE:
+                if (resultCode == RESULT_OK) {
+                    //write code for when writing is done
+                }
+        }
     }
 }
