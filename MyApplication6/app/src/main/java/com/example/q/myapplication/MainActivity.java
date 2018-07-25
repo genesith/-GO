@@ -73,6 +73,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 import java.util.ArrayList;
@@ -90,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
     Button mloginbtn, mlogoutbtn;
     CallbackManager callbackManager;
     AccessToken mAccessToken;
-
+    static String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        updateEmail(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -104,9 +108,16 @@ public class MainActivity extends AppCompatActivity {
         goTabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (email != null) {
+                    Intent intent2 = new Intent(view.getContext(), TabActivity.class);
+                    intent2.putExtra("UserID", email);
+                    startActivity(intent2);
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "페이스북 로그인을 하셔야 진행이 가능합니다", Toast.LENGTH_SHORT).show();
+                }
 
-                Intent intent2 = new Intent( view.getContext(), TabActivity.class);
-                startActivity(intent2);
+
             }
         });
 
@@ -124,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         mDbOpenHelper = new DbOpenHelper(this);
         mDbOpenHelper.open();
         mDbOpenHelper.create();
+        updateEmail(mContext);
     }
 
     public void Permissions(){
@@ -179,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeControls(){
         callbackManager = CallbackManager.Factory.create();
         login_button = (LoginButton)findViewById(R.id.login_button);
-        login_button.setReadPermissions(Arrays.asList("user_status"));
+        login_button.setReadPermissions(Arrays.asList("email"));
 
         mloginbtn = (Button)findViewById(R.id.login_2);
         mloginbtn.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(getApplicationContext(), "Log in 성공", Toast.LENGTH_SHORT).show();
                 mAccessToken = loginResult.getAccessToken();
-
+                updateEmail(mContext);
             }
 
             @Override
@@ -235,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCompleted(GraphResponse graphResponse) {
                 LoginManager.getInstance().logOut();
                 Toast.makeText(getApplicationContext(), "log out", Toast.LENGTH_SHORT).show();
+                email = null;
 
             }
         }).executeAsync();
@@ -244,6 +257,39 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode,resultCode,data);
 
+    }
+
+    public static void updateEmail(final Context ctx){
+        if(AccessToken.getCurrentAccessToken() !=null) {
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(
+                                JSONObject object,
+                                GraphResponse response) {
+                            Log.v("LoginActivity Response ", response.toString());
+
+                            try {
+                                Toast.makeText(ctx, "Email is updated to " + object.getString("email"), Toast.LENGTH_SHORT).show();
+                                //txtEmail.setText("You are logged in as: " + FEmail);
+                                email = object.getString("email");
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email");
+            request.setParameters(parameters);
+            request.executeAsync();
+
+
+        }
+        else
+            Log.i("updateEmail", "there was no AccessToken");
     }
 
 }

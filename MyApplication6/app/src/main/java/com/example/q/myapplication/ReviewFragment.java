@@ -1,10 +1,13 @@
 package com.example.q.myapplication;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -127,6 +130,25 @@ public class ReviewFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 CommitThisVerification(UnpushedCommits.get(position));
             }
+        });
+
+        ListViewVerifications.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                alertDialogBuilder.setMessage("delete this? the int i is " +i);
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                //code for deleting...
+
+
+                            }
+                        });
+                return false;
+            }
+
         });
 
         VerificationListAdapter adapter = new VerificationListAdapter(getContext(), R.layout.list_item, UnpushedCommits);
