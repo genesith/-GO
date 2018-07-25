@@ -12,9 +12,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,7 +46,7 @@ public class Tab4 extends Fragment {
     public Tab4() {
         // Required empty public constructor
     }
-
+    ArrayList<StatusClass> StatusFeed;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -68,6 +72,28 @@ public class Tab4 extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        NetworkTask getStatuses = new NetworkTask("api/getallstatuses", "get", null, null);
+        getStatuses.execute();
+        StatusFeed =new ArrayList<>();
+        try {
+            String s = getStatuses.get();
+            JSONArray statusList = new JSONArray(s);
+            if( s == null){
+                Log.d("um..","sad");
+            }
+            Log.d("why",""+  statusList.length());
+            for (int i = 0; i <  statusList.length(); i++) {
+
+                JSONObject json = (JSONObject)  statusList.get(i);
+                StatusClass status = new StatusClass(json.getString("writer_id"), json.getInt("r_code"), json.getString("image"), Float.parseFloat(json.getString("score")), json.getString("content"),json.getString("date"));
+
+                StatusFeed.add(status);
+            }
+
+        } catch (Exception e) {
+            Log.d("oh", e.getMessage());
+        }
     }
 
     @Override
@@ -77,7 +103,7 @@ public class Tab4 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
         //ArrayList<Bitmap> thumbList = getThumbList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA});
         //PopularAdapter adapter = new PopularAdapter(thumbList);
-        PopularAdapter adapter = new PopularAdapter(getStringList(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] {MediaStore.Images.Media.DATA}));
+        PopularAdapter adapter = new PopularAdapter(StatusFeed);
         RecyclerView recyclerView = view.findViewById(R.id.popularView);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
  //       layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);

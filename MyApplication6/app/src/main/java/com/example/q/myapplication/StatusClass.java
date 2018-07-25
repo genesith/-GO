@@ -5,20 +5,20 @@ import java.util.Date;
 public class StatusClass {
     float Stars;
     //image might be in form of URL? int code?
-    int ImageID;
-    int ResID;
+    String Image;
+    int ResCode;
     String StatusContent;
     int StatusID;
-    int UserID;
-    Date Date;
-    int LikeNumber = 1;
+    String UserID;
+    String Date;
+    int LikeNumber;
     boolean liked = false;
 
-    public StatusClass(int UserID_, int ResID_, int ImageID_, float Stars_, String StatusContent_, Date Date_){
+    public StatusClass(String UserID_, int ResCode_, String ImageID_, float Stars_, String StatusContent_, String Date_){
         UserID= UserID_;
         Stars = Stars_;
-        ImageID = ImageID_;
-        ResID = ResID_;
+        Image = ImageID_;
+        ResCode = ResCode_;
         StatusContent = StatusContent_;
         Date = Date_;
     }
