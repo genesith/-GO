@@ -71,6 +71,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularViewHolder>{
 
         holder.likes.setText("0");
         holder.writer.setText(StatusFeed.get(position).UserID);
+        holder.score.setText(""+StatusFeed.get(position).Stars);
         //holder.img.setImageBitmap(thumbsList.get(position));
         // holder.img.setImageBitmap(Bitmap.createScaledBitmap(thumbsList.get(position),500,500, true));
     }
@@ -90,6 +91,7 @@ class PopularViewHolder extends RecyclerView.ViewHolder{
     public ImageView img;
     public TextView writer;
     public TextView likes;
+    public TextView score;
 
 
     public PopularViewHolder(View itemView) {
@@ -103,6 +105,7 @@ class PopularViewHolder extends RecyclerView.ViewHolder{
         //img.setScaleType(ImageView.ScaleType.FIT_XY);
         likes = itemView.findViewById(R.id.LikeText);
         writer = itemView.findViewById(R.id.writer);
+        score = itemView.findViewById(R.id.stars);
     }
 }
 

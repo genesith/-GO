@@ -21,9 +21,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/stitch_icon"
+        android:icon="@drawable/semicirclev2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/semicirclev2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -32,7 +32,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="Angle?"
+            android:label="어은동GO"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
