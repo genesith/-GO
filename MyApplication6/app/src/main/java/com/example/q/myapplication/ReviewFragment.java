@@ -95,7 +95,9 @@ public class ReviewFragment extends Fragment {
         });
 
         VerificationListAdapter adapter = new VerificationListAdapter(getContext(), R.layout.list_item, UnpushedCommits);
+
         ListViewVerifications.setAdapter(adapter);
+
 
         TextView emptyView = new TextView(getContext());
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
@@ -111,44 +113,9 @@ public class ReviewFragment extends Fragment {
     private void CommitThisVerification(OnspotVerification Verif){
         Log.i("ang", "Gimotti!!, this is a Verif of ResID: " + Verif.getRestaurantID() + " and Date of " + Verif.getDate().toString());
         GoToWriteActivity(Verif);
-        /*
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this.getActivity());
-
-        ImageView VerifImage = ReviewWritingView.findViewById(R.id.ReqImage);
-        //EditText ResTextView= ReviewWritingView.findViewById(R.id.??);
-        RatingBar StarBar = ReviewWritingView.findViewById(R.id.ratingBar);
-
-        mBuilder.setView(ReviewWritingView);
-        AlertDialog ReviewWriteDialog = mBuilder.create();
-        ReviewWriteDialog.show();
-        */
-/*
-        mCancelButtonForAddition.setOnClickListener(
-                new Button.OnClickListener(){
-                    public void onClick(View vv){
-                        mEditCategoryDialog.dismiss();
-                    }
-                });
-  */
     }
 
-/*
-        songView = (ListView) viewforuse.findViewById(R.id.song_list);
-        songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Sets the respective song in the Service, and then plays it.
 
-                musicSrv.setSong(position);
-                musicSrv.playSong();
-
-                // Sets the flag to false for the controller's duration and position purposes.
-                if (playbackPaused) playbackPaused = false;
-                else Log.i("init", "playback was not paused");
-            }
-        });
-    }
-*/
     @Override
     public void onStart() {
         super.onStart();
@@ -179,31 +146,6 @@ public class ReviewFragment extends Fragment {
     }
 
 
-/*
-    public View ListUpdate(ListView l1){
-        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,projection,null,null, null);
-
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> phoneNumList = new ArrayList<>();
-
-        while(cursor.moveToNext()) {
-            //CONTACTS.execSQL("CREATE TABLE IF NOT EXISTS people (Name TEXT, Phonenumber TEXT, Favor INTEGER)");
-            // 쿼리문으로 데이터 불러옴
-            String name = cursor.getString(0);
-            String phoneNum = cursor.getString(1);
-            nameList.add(name);
-            phoneNumList.add(phoneNum);
-            mDbOpenHelper.insertColumn(name, phoneNum, 0);
-        }
-        cursor.close();
-        VerificationListAdapter adapter = new VerificationListAdapter (getContext(), R.layout.list_item, nameList, phoneNumList);
-        l1.setAdapter(adapter);
-
-
-        return l1;
-    }
-*/
 
     public void GoToWriteActivity(OnspotVerification VerifElement){
         int REQ_CODE = 123;

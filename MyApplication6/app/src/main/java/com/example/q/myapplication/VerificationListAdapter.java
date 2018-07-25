@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +40,7 @@ public class VerificationListAdapter extends BaseAdapter {
     }
     // Hold views of the ListView to improve its scrolling performance
     static class ViewHolder {
-        public TextView VerifTextView;
+        public TextView VerifTextView, DateView;
         public int ResID;
         public Date VerifDate;
     }
@@ -64,13 +66,15 @@ public class VerificationListAdapter extends BaseAdapter {
             viewHolder.ResID = VerifsList.get(position).getRestaurantID();
             viewHolder.VerifDate = VerifsList.get(position).getDate();
             viewHolder.VerifTextView = (TextView) rowView.findViewById(R.id.VerifText);
+            viewHolder.DateView = (TextView) rowView.findViewById(R.id.VerifDateText);
             rowView.setTag(viewHolder);
         }
         // Set text to each TextView of ListView item
         else{
             viewHolder = (ViewHolder) rowView.getTag();
-            viewHolder.ResID = VerifsList.get(position).getRestaurantID();;
-            viewHolder.VerifDate = VerifsList.get(position).getDate();;
+            viewHolder.ResID = VerifsList.get(position).getRestaurantID();
+            viewHolder.VerifDate = VerifsList.get(position).getDate();
+            viewHolder.DateView = (TextView) rowView.findViewById(R.id.VerifDateText);
         }
 
         Date currentLocalTime = viewHolder.VerifDate;
@@ -78,7 +82,9 @@ public class VerificationListAdapter extends BaseAdapter {
         date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
         String localTime = date.format(currentLocalTime);
 
-        viewHolder.VerifTextView.setText("@" + getRestaurantNameFromID(viewHolder.ResID, context) + " " +localTime);
+        viewHolder.VerifTextView.setText("@" + getRestaurantNameFromID(viewHolder.ResID, context));
+        viewHolder.DateView.setText(localTime);
+
 
         return rowView;
     }

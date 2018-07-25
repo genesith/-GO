@@ -37,6 +37,7 @@ public class StatusFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //set to false VIA CODE once things are set up
+        //SERVER
         testmode = true;
 
 
