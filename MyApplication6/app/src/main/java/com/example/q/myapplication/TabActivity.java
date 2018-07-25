@@ -20,6 +20,8 @@ import com.bumptech.glide.Glide;
 
 public class TabActivity extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab4.OnFragmentInteractionListener{
 
+    public static String UserID = "갓우진";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

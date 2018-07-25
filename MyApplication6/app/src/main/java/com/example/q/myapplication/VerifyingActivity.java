@@ -2,11 +2,13 @@ package com.example.q.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,13 +17,23 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static com.example.q.myapplication.OnspotVerification.getRestaurantNameFromID;
 
 public class VerifyingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     int ResID;
-
+    String UserID;
     TextView tv;
     ToggleButton tb;
 
@@ -99,17 +111,41 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-
+        UserID = TabActivity.UserID;
         submitButton=findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 if (verified[0] == true && verified[1]== true){
 
-                    Log.i("submit", "should work!");
+                    JSONArray jsonList = new JSONArray();
+                    try {
+                        JSONObject json = new JSONObject();
+
+                        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(""));
+                        Date currentLocalTime = cal.getTime();
+                        SimpleDateFormat date = new SimpleDateFormat("M월 d일. h시 m분 a");
+                        // you can get seconds by adding  "...:ss" to it
+                        date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
+                        String localTime = date.format(currentLocalTime);
+                        Log.i("wow", ""+ currentLocalTime);
+
+                        json.accumulate("date", localTime);
+                        json.accumulate("user_id", UserID);
+                        json.accumulate("r_id", ResID);
+                        jsonList.put(json);
+                    }
+                    catch (Exception e){
+
+                    }
+                    NetworkTask postOnspot= new NetworkTask("api/onspot","post", null, jsonList);
+                    postOnspot.execute();
+
+                    Toast.makeText( VerifyingActivity.this, "현장 인증 성공!", Toast.LENGTH_LONG).show();
+                    Toast.makeText( VerifyingActivity.this, "맛있게 식사하신 후 리뷰를 작성해주세요" + verified[0] + " " + verified[1], Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Log.i("submit", "should not work! " + verified[0] + " " + verified[1]);
+                    Toast.makeText( VerifyingActivity.this, "인증이 완료되지 않아 제출할 수 없습니다 ", Toast.LENGTH_LONG).show();
                 }
             }
         });
