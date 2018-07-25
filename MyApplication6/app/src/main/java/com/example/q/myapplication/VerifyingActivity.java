@@ -22,6 +22,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
     TextView tv;
     ToggleButton tb;
+
     Button submitButton, PicCompare;
     double longitude = 1;
     double latitude = 1;
@@ -35,6 +36,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
 
     private boolean[] verified = {false, false};
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
 
                         tv.setText("위치정보 미수신중");
                         lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
+
                         Log.i("Long and Lat", longitude + " " +latitude);
                         if (longitude<cutoff && longitude > - cutoff && latitude<cutoff && latitude > - cutoff){
                             tv.setText("인증 완료!!");
@@ -89,6 +92,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                             tv.setText("인증실패! 다시 시도 해주세요");
                             verified[0] = false;
                         }
+
                     }
                 }catch(SecurityException ex){
                 }
@@ -100,6 +104,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View view){
                 if (verified[0] == true && verified[1]== true){
+
                     Log.i("submit", "should work!");
                 }
                 else{
@@ -113,6 +118,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View view){
                 //Intent CompareIntent = new Intent (this, open)
+
             }
         });
 
@@ -141,6 +147,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
             //Network 위치제공자에 의한 위치변화
             //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
 
+
             //tv.setText("위치정보 : " + provider + "\n위도 : " + latitude + "\n경도 : " + longitude + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
             longitude -= Res_longitude;
             latitude -= Res_latitude;
@@ -153,6 +160,7 @@ public class VerifyingActivity extends AppCompatActivity implements AdapterView.
                 tv.setText("인증이 실패했습니다");
                 verified[0] = false;
             }
+
 
         }
         public void onProviderDisabled(String provider) {
