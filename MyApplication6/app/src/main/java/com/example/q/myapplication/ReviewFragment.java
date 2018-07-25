@@ -170,6 +170,7 @@ public class ReviewFragment extends Fragment {
     private void CommitThisVerification(OnspotVerification Verif){
         Log.i("ang", "Gimotti!!, this is a Verif of ResID: " + Verif.getRestaurantID() + " and Date of " + Verif.getDate().toString());
         GoToWriteActivity(Verif);
+
     }
 
 
@@ -215,7 +216,7 @@ public class ReviewFragment extends Fragment {
         String DateString = VerifElement.getDate();
 
         myIntent.putExtra("Date", DateString); //Optional parameters
-        myIntent.putExtra("Res", getRestaurantNameFromID(VerifElement.getRestaurantID(), getContext())); //Optional parameters
+        myIntent.putExtra("Res", VerifElement.getRestaurantID()); //Optional parameters
         startActivityForResult(myIntent, REQ_CODE);
     }
 

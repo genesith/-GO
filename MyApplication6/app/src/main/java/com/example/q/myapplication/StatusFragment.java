@@ -13,6 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -38,21 +41,43 @@ public class StatusFragment extends Fragment {
 
         //set to false VIA CODE once things are set up
         //SERVER
-        testmode = true;
+        testmode = false;
 
 
         // need to simulate 불러와 the onspot verifications lol
         if (testmode) {
-            StatusFeed=new ArrayList<>();
+            /*StatusFeed=new ArrayList<>();
             StatusClass lol = new StatusClass(1, 1, 1, 3.5f, "와우 오늘 돈까스 시켰는데 돈까스가 아닌 ㅈ까스인줄 ㄹㅇ 개노맛, 근데 알바 누나 이뻐서 3.5 드림" , Calendar.getInstance(TimeZone.getTimeZone("")).getTime());
             StatusFeed.add(lol);
             lol = new StatusClass(1, 3, 2, 4.5f, "너무 맛있어서 눈물 흘림... 근데 알바가 남성분이라 0.5 차감함", Calendar.getInstance(TimeZone.getTimeZone("")).getTime());
             StatusFeed.add(lol);
             lol = new StatusClass(2, 5, 3, 5f, "별루임", Calendar.getInstance(TimeZone.getTimeZone("")).getTime());
-            StatusFeed.add(lol);
+            StatusFeed.add(lol);*/
         }
         else{
             //write code about getting the list through server
+
+            NetworkTask getStatuses = new NetworkTask("api/getallstatuses", "get", null, null);
+            getStatuses.execute();
+            StatusFeed=new ArrayList<>();
+            try {
+                String s = getStatuses.get();
+                JSONArray statusList = new JSONArray(s);
+                if( s == null){
+                    Log.d("um..","sad");
+                }
+                Log.d("why",""+  statusList.length());
+                for (int i = 0; i <  statusList.length(); i++) {
+
+                    JSONObject json = (JSONObject)  statusList.get(i);
+                    StatusClass status = new StatusClass(json.getString("writer_id"), json.getInt("r_code"), json.getString("image"), Float.parseFloat(json.getString("score")), json.getString("content"),json.getString("date"));
+
+                    StatusFeed.add(status);
+                }
+
+            } catch (Exception e) {
+                Log.d("oh", e.getMessage());
+            }
         }
 
 

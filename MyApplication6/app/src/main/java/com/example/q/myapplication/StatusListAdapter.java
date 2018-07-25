@@ -1,6 +1,9 @@
 package com.example.q.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,8 @@ import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,9 +82,16 @@ public class StatusListAdapter extends BaseAdapter {
         else{
             Glide.with(context).load(R.drawable.heartbreak).into(viewHolder.Heart);
         }
-        String imagestring = getImageForLoad(temp.ImageID);
-        Glide.with(context).load(imagestring).into(viewHolder.TheImage);
-        viewHolder.ResText.setText( getUserByUserID(temp.UserID) + " @" + getRestaurantNameFromID(temp.ResID, context));
+        //String imagestring = getImageForLoad(temp.Image);
+
+    //    bmp.compress(Bitmap.CompressFormat.JPEG,100, baos);
+        byte[] encodebyte = Base64.decode(temp.Image, Base64.DEFAULT);
+        InputStream istream = new ByteArrayInputStream(encodebyte);
+        Bitmap bitmap = BitmapFactory.decodeStream(istream);
+        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()*8/10, (Integer)bitmap.getHeight()*8/10,true);
+        viewHolder.TheImage.setImageBitmap(bitmap);
+        //Glide.with(context).load(bitmap.into).into(viewHolder.TheImage);
+        viewHolder.ResText.setText(temp.UserID + " @" + getRestaurantNameFromID(temp.ResCode, context));
         viewHolder.StarText.setText(String.valueOf(temp.Stars));
         viewHolder.StatusText.setText(temp.StatusContent);
 
@@ -99,10 +111,7 @@ public class StatusListAdapter extends BaseAdapter {
             );
         String LikeString = StringForLikes(temp.LikeNumber);
         viewHolder.LikeText.setText(LikeString);
-        SimpleDateFormat date = new SimpleDateFormat("M월 d일 h시 a");
-        date.setTimeZone(TimeZone.getTimeZone("GMT+9:00"));
-        String localTime = date.format(temp.Date);
-        viewHolder.DateText.setText(localTime);
+        viewHolder.DateText.setText(temp.Date);
 
 
         return rowView;
